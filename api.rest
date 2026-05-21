@@ -1,0 +1,16 @@
+@hostname = localhost
+@port = 1337
+@api = {{hostname}}:{{port}}
+@contentType = application/json
+
+@url_api = https://{{api}}/api
+
+@token_jwt = 62153bb648475fe5063e76caeb461dc70746e81c4a142f87bcf150b05ed3409b4a71606855b5f522ce1ec3b6792519fb5e591ef766533d1e2160bc841c3fcff9e3a409903941d65192c4582f6e7cbdd7c3c95c3365d2dce621a05ab9ab52cf4d171db06765354ab042704d1ac1f3af75cc7b9dd43116bba06468c72bfa7403c1
+
+// Check healt web server
+GET {{url_api}}/categories
+Authorization: Bearer {{token_jwt}}
+
+###
+GET {{url_api}}/expenses
+Authorization: Bearer {{token_jwt}}
