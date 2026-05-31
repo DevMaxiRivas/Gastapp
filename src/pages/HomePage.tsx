@@ -1,7 +1,9 @@
+import RegisterExpenseForm from "@/features/expenses/components/RegisterExpenseForm";
+
 export function HomePage() {
     return (
-        <section className="max-w-4xl mx-auto">
-            <h1>Home</h1>
+        <section className="p-4">
+            <RegisterExpenseForm />
         </section>
     );
 }
