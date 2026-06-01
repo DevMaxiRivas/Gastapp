@@ -18,7 +18,7 @@ export default function Layout() {
             <SidebarInset>
                 <SiteHeader />
                 <FloatingButton />
-                <main className="flex flex-1 flex-col">
+                <main className="p-4 space-y-2">
                     <Outlet />
                 </main>
             </SidebarInset>

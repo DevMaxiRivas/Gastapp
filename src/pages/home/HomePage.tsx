@@ -5,11 +5,11 @@ import { RecentTransactionsSection } from "./components/RecentTransactionsSectio
 
 export function HomePage() {
     return (
-        <div className="p-4 space-y-2">
+        <>
             <QuickStatsSection />
             <MonthlyBudgetSection />
             <MonthlyExpensesSection />
             <RecentTransactionsSection />
-        </div>
+        </>
     );
 }
