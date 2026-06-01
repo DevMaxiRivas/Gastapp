@@ -21,7 +21,6 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import type { UserType } from "@/types/UserType"
-import { Button } from "@base-ui/react"
 
 export function NavUser({ user }: { user: UserType }) {
     return (
@@ -29,7 +28,7 @@ export function NavUser({ user }: { user: UserType }) {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger className={"w-full cursor-pointer"}>
-                        <Button className="flex gap-2 rounded-full">
+                        <div className="flex gap-2 rounded-full">
                             <Avatar>
                                 <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
                                 <AvatarFallback>LR</AvatarFallback>
@@ -40,7 +39,7 @@ export function NavUser({ user }: { user: UserType }) {
                                     {user.email}
                                 </span>
                             </div>
-                        </Button>
+                        </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuGroup>
