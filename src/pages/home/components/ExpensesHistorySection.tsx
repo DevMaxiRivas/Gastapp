@@ -1,14 +1,14 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TableExpensesHistory } from "@/features/expenses/components/TableExpensesHistory";
+import { ExpensesHistoryTable } from "@/features/transactions/components/ExpensesHistoryTable";
 
-export function TableExpensesHistorySection() {
+export function ExpensesHistorySection() {
     return (
         <section className="px-4">
             <Card className="@container/card">
                 <CardHeader>
                     <CardDescription className="text-xl font-semibold"><b>Expenses History</b></CardDescription>
                     <CardTitle>
-                        <TableExpensesHistory />
+                        <ExpensesHistoryTable />
                     </CardTitle>
                 </CardHeader>
             </Card>

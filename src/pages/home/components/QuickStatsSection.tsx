@@ -1,5 +1,6 @@
 // QuickStatsSection.tsx
 import { QuickReferenceCard } from "@/components/shared/cards/QuickReferenceCard";
+import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { useMemo } from "react";
 
 const getDaysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
@@ -17,18 +18,21 @@ export function QuickStatsSection() {
             value: "ARS 1.250,00",
             footer: `1 - ${daysInMonth} ${monthName} ${year}`,
             type: "success",
+            iconCard: TrendingUp
         } as const,
         {
             title: "Total expenses",
             value: "ARS 2.000,00",
             footer: `1 - ${daysInMonth} ${monthName} ${year}`,
             type: "danger",
+            iconCard: TrendingDown
         } as const,
         {
             title: "Balance",
             value: "ARS -750,00",
             footer: "Revenue - Expenses",
             type: "neutral",
+            iconCard: Wallet
         } as const,
     ], [daysInMonth, monthName, year]);
 

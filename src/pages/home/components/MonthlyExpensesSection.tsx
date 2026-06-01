@@ -1,4 +1,4 @@
-import { MonthlyExpensesGraph } from "@/features/expenses/components/MonthlyExpensesGraph";
+import { MonthlyExpensesGraph } from "@/features/transactions/components/MonthlyExpensesGraph";
 
 export function MonthlyExpensesSection() {
     return (

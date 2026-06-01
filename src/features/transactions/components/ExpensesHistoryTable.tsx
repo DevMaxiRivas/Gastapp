@@ -52,7 +52,7 @@ function getData(): Payment[] {
     ]
 }
 
-export function TableExpensesHistory() {
+export function ExpensesHistoryTable() {
     const data = getData()
     return (
         <div>

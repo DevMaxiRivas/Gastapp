@@ -10,9 +10,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus } from "lucide-react"
-import RegisterExpenseForm from "./RegisterExpenseForm"
+import RegisterTransactionForm from "./RegisterTransactionForm"
 
-export function FormExpenseDialog() {
+export function FormTransactionDialog() {
     return (
         <Dialog>
             <DialogTrigger render={
@@ -27,7 +27,7 @@ export function FormExpenseDialog() {
                         Add a new expense to your budget.
                     </DialogDescription>
                 </DialogHeader>
-                <RegisterExpenseForm />
+                <RegisterTransactionForm />
                 <DialogFooter>
                     <DialogClose render={<Button className={"w-full cursor-pointer bg-red-600 hover:bg-red-600/90 text-white hover:text-white"}>Cancel</Button>} />
                 </DialogFooter>
