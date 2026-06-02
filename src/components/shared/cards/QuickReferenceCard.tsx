@@ -5,7 +5,7 @@ import { type LucideIcon } from "lucide-react";
 type QuickReferenceCardParams = {
     title: string;
     value: string;
-    footer: string;
+    footer?: string;
     type: "success" | "danger" | "neutral";
     iconCard?: LucideIcon;
 }
@@ -20,11 +20,13 @@ export function QuickReferenceCard({ title, value, footer, type, iconCard: IconC
             <CardContent className={`text-2xl font-semibold tabular-nums @[250px]/card:text-3xl ${COLORS_TEXT[type]}`}>
                 {value}
             </CardContent>
-            <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                <div className="line-clamp-1 flex gap-2 font-medium">
-                    {footer}
-                </div>
-            </CardFooter>
+            {
+                footer && <CardFooter className="flex-col items-start gap-1.5 text-sm">
+                    <div className="line-clamp-1 flex gap-2 font-medium">
+                        {footer}
+                    </div>
+                </CardFooter>
+            }
         </Card>
     )
 }
