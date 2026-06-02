@@ -1,9 +1,10 @@
+import { Section } from "@/components/layout/Section"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 
 export function MonthlyBudgetSection() {
     return (
-        <section className="px-4">
+        <Section>
             <Card className="@container/card">
                 <CardHeader>
                     <CardTitle className="text-xl font-semibold"><b>Budget Monthly</b></CardTitle>
@@ -17,6 +18,6 @@ export function MonthlyBudgetSection() {
                     </div>
                 </CardContent>
             </Card>
-        </section>
+        </Section>
     )
 }

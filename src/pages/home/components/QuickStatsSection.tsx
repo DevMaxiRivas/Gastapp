@@ -1,14 +1,13 @@
 // QuickStatsSection.tsx
+import { Section } from "@/components/layout/Section";
 import { QuickReferenceCard } from "@/components/shared/cards/QuickReferenceCard";
+import { getDaysInMonth, getMonthName } from "@/utils/dateUtils";
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { useMemo } from "react";
 
-const getDaysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
-const getMonthName = (month: Date) => month.toLocaleString('default', { month: 'long' });
-
 export function QuickStatsSection() {
     const today = new Date();
-    const daysInMonth = getDaysInMonth(today.getFullYear(), today.getMonth() + 1);
+    const daysInMonth = getDaysInMonth(today);
     const monthName = getMonthName(today);
     const year = today.getFullYear();
 
@@ -37,10 +36,12 @@ export function QuickStatsSection() {
     ], [daysInMonth, monthName, year]);
 
     return (
-        <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 px-4">
-            {data.map((item, index) => (
-                <QuickReferenceCard key={`${item.title}-${index}`} {...item} />
-            ))}
-        </section>
+        <Section>
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4">
+                {data.map((item, index) => (
+                    <QuickReferenceCard key={`${item.title}-${index}`} {...item} />
+                ))}
+            </div>
+        </Section>
     );
 }

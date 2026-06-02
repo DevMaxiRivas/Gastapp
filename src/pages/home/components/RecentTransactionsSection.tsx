@@ -1,3 +1,4 @@
+import { Section } from "@/components/layout/Section";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ItemGroup } from "@/components/ui/item";
 import { TransactionItem } from "@/features/transactions/components/TransactionItem";
@@ -46,11 +47,11 @@ const transactions = [
 
 export function RecentTransactionsSection() {
     return (
-        <section className="px-4">
+        <Section>
             <Card className="@container/card">
                 <CardHeader>
                     <CardTitle className="text-xl font-semibold"><b>Recent Transactions</b></CardTitle>
-                    <CardDescription><b>See your latest transactions</b></CardDescription>
+                    <CardDescription>See your latest transactions</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ItemGroup className="w-full">
@@ -63,6 +64,6 @@ export function RecentTransactionsSection() {
                     </ItemGroup>
                 </CardContent>
             </Card>
-        </section>
+        </Section>
     );
 }
