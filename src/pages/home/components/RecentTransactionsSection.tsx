@@ -1,7 +1,5 @@
-import { Section } from "@/components/layout/Section";
 import { SectionAsCard } from "@/components/shared/sections/SectionAsCard";
 import { SectionAsCardHeader } from "@/components/shared/sections/SectionAsCardHeader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ItemGroup } from "@/components/ui/item";
 import { TransactionItem } from "@/features/transactions/components/TransactionItem";
 import { CATEGORY_ICONS } from "@/lib/constants-front";
