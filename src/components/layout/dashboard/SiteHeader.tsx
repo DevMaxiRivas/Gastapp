@@ -1,5 +1,5 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { ModeToggle } from "../ModeToggle"
+import { ModeToggle } from "../../ModeToggle"
 import { APP_NAME } from "@/lib/constants"
 
 export function SiteHeader() {

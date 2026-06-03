@@ -2,14 +2,10 @@
 
 import * as React from "react"
 import {
-    Camera,
     ChartBarDecreasing,
     LayoutDashboard,
-    Brain,
-    File,
     FileQuestionMark,
     List,
-    Settings,
 } from "lucide-react"
 
 import { NavMain } from "./NavMain.tsx"
@@ -50,60 +46,7 @@ const data = {
             icon: ChartBarDecreasing,
         },
     ],
-    navClouds: [
-        {
-            title: "Capture",
-            icon: Camera,
-            isActive: true,
-            url: "#",
-            items: [
-                {
-                    title: "Active Proposals",
-                    url: "#",
-                },
-                {
-                    title: "Archived",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Proposal",
-            icon: File,
-            url: "#",
-            items: [
-                {
-                    title: "Active Proposals",
-                    url: "#",
-                },
-                {
-                    title: "Archived",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Prompts",
-            icon: Brain,
-            url: "#",
-            items: [
-                {
-                    title: "Active Proposals",
-                    url: "#",
-                },
-                {
-                    title: "Archived",
-                    url: "#",
-                },
-            ],
-        },
-    ],
     navSecondary: [
-        {
-            title: "Settings",
-            url: "#",
-            icon: Settings,
-        },
         {
             title: "Get Help",
             url: "#",

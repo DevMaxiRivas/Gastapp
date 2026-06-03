@@ -1,4 +1,4 @@
-import { Section } from "@/components/layout/Section";
+import { Section } from "@/components/layout/dashboard/Section";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { type ReactNode } from "react";
 

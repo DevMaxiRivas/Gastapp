@@ -1,4 +1,4 @@
-import { Section } from "@/components/layout/Section";
+import { Section } from "@/components/layout/dashboard/Section";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 

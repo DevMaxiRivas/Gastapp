@@ -1,5 +1,5 @@
 // QuickStatsSection.tsx
-import { Section } from "@/components/layout/Section";
+import { Section } from "@/components/layout/dashboard/Section";
 import { QuickReferenceCard } from "@/components/shared/cards/QuickReferenceCard";
 import { getDaysInMonth, getMonthName } from "@/utils/dateUtils";
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react";

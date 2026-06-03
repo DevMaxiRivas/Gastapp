@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { SidebarInset, SidebarProvider } from "./components/ui/sidebar";
-import { AppSidebar } from "./components/layout/AppSideBar";
-import { SiteHeader } from "./components/layout/SiteHeader";
-import { FloatingButton } from "./features/transactions/components/FloattingButton";
+import { SidebarInset, SidebarProvider } from "../../ui/sidebar";
+import { AppSidebar } from "./AppSideBar";
+import { SiteHeader } from "./SiteHeader";
+import { FloatingButton } from "../../../features/transactions/components/FloattingButton";
 
-export default function Layout() {
+export default function LayoutDashboard() {
     return (
         <SidebarProvider
             style={

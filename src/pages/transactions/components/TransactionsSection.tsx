@@ -1,4 +1,4 @@
-import { Section } from "@/components/layout/Section";
+import { Section } from "@/components/layout/dashboard/Section";
 import type { RecentCustomerRow } from "@/components/shared/tables/schema";
 import { RecentCustomersTable } from "@/components/shared/tables/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

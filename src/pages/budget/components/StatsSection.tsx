@@ -1,4 +1,4 @@
-import { Section } from "@/components/layout/Section";
+import { Section } from "@/components/layout/dashboard/Section";
 import { QuickReferenceCard } from "@/components/shared/cards/QuickReferenceCard";
 import { DollarSign, Target, TrendingDown } from "lucide-react";
 

@@ -1,4 +1,4 @@
-import { Section } from "@/components/layout/Section";
+import { Section } from "@/components/layout/dashboard/Section";
 import { MonthlyExpensesGraph } from "@/features/transactions/components/MonthlyExpensesGraph";
 
 export function MonthlyExpensesSection() {

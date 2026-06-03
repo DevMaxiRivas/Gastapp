@@ -21,6 +21,7 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import type { UserType } from "@/types/UserType"
+import { Link } from "react-router-dom"
 
 export function NavUser({ user }: { user: UserType }) {
     return (
@@ -43,19 +44,23 @@ export function NavUser({ user }: { user: UserType }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <BadgeCheckIcon />
-                                Account
+                            <DropdownMenuItem className="p-0">
+                                <Link to="/profile" className="w-full px-2 py-1.5 flex gap-2 items-center cursor-pointer">
+                                    <BadgeCheckIcon />
+                                    Account
+                                </Link>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <LogOutIcon />
-                            Sign Out
+                        <DropdownMenuItem className={"text-red-600 cursor-pointer"}>
+                            <Link to="/" className="w-full px-2 py-1.5 flex gap-2 items-center cursor-pointer">
+                                <LogOutIcon />
+                                Sign Out
+                            </Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>
-        </SidebarMenu>
+        </SidebarMenu >
     )
 }
