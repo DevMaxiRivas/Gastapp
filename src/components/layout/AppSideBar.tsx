@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/sidebar"
 import { NavSecondary } from "./NavSecondary.tsx"
 import { NavUser } from "./NavUser.tsx"
-import { APP_NAME } from "@/lib/constants.ts"
+import { APP_NAME, APP_ROUTES } from "@/lib/constants.ts"
 
 const data = {
     user: {
@@ -36,17 +36,17 @@ const data = {
     navMain: [
         {
             title: "Dashboard",
-            url: "/",
+            url: APP_ROUTES.HOME,
             icon: LayoutDashboard,
         },
         {
             title: "Transactions",
-            url: "#",
+            url: APP_ROUTES.TRANSACTIONS,
             icon: List,
         },
         {
             title: "Budget",
-            url: "#",
+            url: APP_ROUTES.BUDGET,
             icon: ChartBarDecreasing,
         },
     ],

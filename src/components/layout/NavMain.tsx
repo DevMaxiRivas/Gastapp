@@ -17,12 +17,14 @@ export function NavMain({ items }: { items: ItemBarType[] }) {
                 <SidebarMenu>
                     {items.map((item) => (
                         <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton tooltip={item.title}>
-                                <Link to={item.url} className="flex gap-2 items-center">
+                            <Link to={item.url} className="flex gap-2 items-center">
+                                <SidebarMenuButton
+                                    className="cursor-pointer"
+                                >
                                     {item.icon && <item.icon />}
                                     <span>{item.title}</span>
-                                </Link>
-                            </SidebarMenuButton>
+                                </SidebarMenuButton>
+                            </Link>
                         </SidebarMenuItem>
                     ))}
                 </SidebarMenu>

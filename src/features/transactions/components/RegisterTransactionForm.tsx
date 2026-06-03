@@ -20,7 +20,7 @@ const groups = [
 
 export default function RegisterTransactionForm() {
     return (
-        <form className="flex flex-col gap-4 w-full max-w-sm">
+        <form className="flex flex-col gap-4">
             <Label htmlFor="description">Description</Label>
             <Input
                 id="description"

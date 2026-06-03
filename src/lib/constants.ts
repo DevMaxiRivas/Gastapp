@@ -1,5 +1,8 @@
 export const APP_ROUTES = {
     HOME: "/",
+    TRANSACTIONS: "/transactions",
+    BUDGET: "/budget",
+    PROFILE: "/profile",
     LOGIN: "/login",
     REGISTER: "/register",
 };

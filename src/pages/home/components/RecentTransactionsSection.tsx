@@ -1,4 +1,6 @@
 import { Section } from "@/components/layout/Section";
+import { SectionAsCard } from "@/components/shared/sections/SectionAsCard";
+import { SectionAsCardHeader } from "@/components/shared/sections/SectionAsCardHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ItemGroup } from "@/components/ui/item";
 import { TransactionItem } from "@/features/transactions/components/TransactionItem";
@@ -45,25 +47,26 @@ const transactions = [
     } as const
 ]
 
+
 export function RecentTransactionsSection() {
     return (
-        <Section>
-            <Card className="@container/card">
-                <CardHeader>
-                    <CardTitle className="text-xl font-semibold"><b>Recent Transactions</b></CardTitle>
-                    <CardDescription>See your latest transactions</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ItemGroup className="w-full">
-                        {
-                            transactions.map((transaction) => (
-                                <TransactionItem key={transaction.id} transaction={transaction} />
+        <SectionAsCard
+            header={
+                <SectionAsCardHeader
+                    title="Recent Transactions"
+                    description="See your latest transactions"
+                />
+            }
+            content={
+                <ItemGroup className="w-full">
+                    {
+                        transactions.map((transaction) => (
+                            <TransactionItem key={transaction.id} transaction={transaction} />
 
-                            ))
-                        }
-                    </ItemGroup>
-                </CardContent>
-            </Card>
-        </Section>
+                        ))
+                    }
+                </ItemGroup>
+            }
+        />
     );
 }
