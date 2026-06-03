@@ -2,12 +2,12 @@ import { QuickStatsSection } from "@/pages/home/components/QuickStatsSection";
 import { MonthlyBudgetSection } from "./components/MonthlyBudgetSection";
 import { MonthlyExpensesSection } from "./components/MonthlyExpensesSection";
 import { RecentTransactionsSection } from "./components/RecentTransactionsSection";
-import { TitleSection } from "@/components/shared/sections/TitleSection";
+import { TitlePageSection } from "@/components/shared/sections/TitlePageSection";
 
 export function HomePage() {
     return (
         <>
-            <TitleSection
+            <TitlePageSection
                 title="Dashboard"
                 subtitle="Overview of your finances"
             />
