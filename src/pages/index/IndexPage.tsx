@@ -1,7 +1,7 @@
 import { APP_ROUTES } from "@/lib/constants";
 import { Link } from "react-router-dom";
 
-export function IndexPage() {
+export default function IndexPage() {
     return (
         <div>
             <h1>Index</h1>

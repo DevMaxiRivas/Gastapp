@@ -2,7 +2,7 @@ import { TitlePageSection } from "@/components/shared/sections/TitlePageSection"
 import { SummarySection } from "./components/SummarySection";
 import { TransactionsSection } from "./components/TransactionsSection";
 
-export function TransactionsPage() {
+export default function TransactionsPage() {
     return (
         <>
             <TitlePageSection

@@ -5,7 +5,7 @@ import { StatsSection } from "./components/StatsSection";
 import { ProgressMonthSection } from "./components/MonthSection";
 import { RecommendationsSection } from "./components/RecommendationsSection";
 
-export function BudgetPage() {
+export default function BudgetPage() {
     return (
         <>
             <TitlePageSection

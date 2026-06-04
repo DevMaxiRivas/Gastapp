@@ -2,7 +2,7 @@ import { Section } from "@/components/layout/dashboard/Section";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-export function NotFoundPage() {
+export default function NotFoundPage() {
     return (
         <Section>
             <div className="h-[80vh] w-full">

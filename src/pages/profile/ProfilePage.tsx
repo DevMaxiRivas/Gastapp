@@ -1,6 +1,6 @@
 import { TitlePageSection } from "@/components/shared/sections/TitlePageSection";
 
-export function ProfilePage() {
+export default function ProfilePage() {
     return (
         <>
             <TitlePageSection

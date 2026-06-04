@@ -4,7 +4,7 @@ import { MonthlyExpensesSection } from "./components/MonthlyExpensesSection";
 import { RecentTransactionsSection } from "./components/RecentTransactionsSection";
 import { TitlePageSection } from "@/components/shared/sections/TitlePageSection";
 
-export function HomePage() {
+export default function HomePage() {
     return (
         <>
             <TitlePageSection
