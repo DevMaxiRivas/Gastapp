@@ -20,7 +20,7 @@ export default function RegisterPage() {
           </p>
         </>
       </CenteredFormContainer>
-      <WelcomeBannerContainer greeting="Welcome!" tip="You&apos;re in the right place." />
+      <WelcomeBannerContainer greeting="Welcome!" tip="You&apos;re in the right place." animationDirection="left" />
     </div>
   );
 }

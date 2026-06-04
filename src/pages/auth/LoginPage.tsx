@@ -8,7 +8,7 @@ import { CenteredFormContainer } from "@/components/shared/auth/CenteredFormCont
 export default function LoginPage() {
   return (
     <div className="flex h-dvh">
-      <WelcomeBannerContainer greeting="Hello again" tip="Login to continue" />
+      <WelcomeBannerContainer greeting="Hello again" tip="Login to continue" animationDirection="right" />
       <CenteredFormContainer title="Login" tip="Welcome back. Enter your email and password, let&apos;s hope you remember them this time.">
         <>
           <LoginForm />

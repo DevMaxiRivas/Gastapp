@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 type WelcomeBannerContainerProps = {
     greeting: string;
     tip: string;
+    animationDirection: "left" | "right";
 }
 
-export default function WelcomeBannerContainer({ greeting, tip }: WelcomeBannerContainerProps) {
+export default function WelcomeBannerContainer({ greeting, tip, animationDirection }: WelcomeBannerContainerProps) {
     return (
-        <div className="hidden bg-primary lg:block lg:w-1/3">
+        <div className="hidden bg-primary lg:block lg:w-1/3 animate-fade-in">
             <div className="flex h-full flex-col items-center justify-center p-12 text-center">
-                <div className="space-y-2">
+                <div className={`space-y-2 animate-fade-in-${animationDirection}`}>
                     <Link to={"/"}>
                         <div className="text-white text-3xl font-black tracking-tight">
                             <b>
