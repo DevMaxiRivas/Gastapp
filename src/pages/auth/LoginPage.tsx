@@ -1,20 +1,26 @@
-import { CenteredFormContainer } from "@/components/shared/auth/CenteredFormContainer";
-import LoginForm from "@/features/auth/components/LoginForm";
 import { Link } from "react-router-dom";
 
-export function LoginPage() {
-    return (
-        <CenteredFormContainer title="Sign in to your account">
-            <>
-                <LoginForm />
-                <p className="mt-10 text-center text-sm/6 text-gray-400">
-                    Don&apos;t have an account{" "}
-                    <br />
-                    <Link to="/register" className="font-semibold text-indigo-400 hover:text-indigo-300">
-                        Click here to register
-                    </Link>
-                </p>
-            </>
-        </CenteredFormContainer>
-    );
+import LoginForm from "@/features/auth/components/LoginForm";
+import WelcomeBannerContainer from "@/components/shared/auth/WelcomeBannerContainer";
+import { CenteredFormContainer } from "@/components/shared/auth/CenteredFormContainer";
+
+
+export default function LoginPage() {
+  return (
+    <div className="flex h-dvh">
+      <WelcomeBannerContainer greeting="Hello again" tip="Login to continue" />
+      <CenteredFormContainer title="Login" tip="Welcome back. Enter your email and password, let&apos;s hope you remember them this time.">
+        <>
+          <LoginForm />
+          <p className="text-center text-muted-foreground text-xs">
+            Don&apos;t have an account?{" "}
+            <Link to="/register" className="text-primary">
+              Register
+            </Link>
+          </p>
+        </>
+      </CenteredFormContainer>
+
+    </div>
+  );
 }

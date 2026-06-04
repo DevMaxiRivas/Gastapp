@@ -25,7 +25,7 @@ export default function RegisterForm() {
     return (
         <form
             // action={action} 
-            className="flex flex-col gap-4 w-full max-w-sm"
+            className="flex flex-col gap-4"
         >
 
             {/* {state?.error && (
@@ -85,11 +85,6 @@ export default function RegisterForm() {
                 {/* {isPending ? "Creando cuenta..." : "Create account"} */}
                 Register
             </Button>
-
-            <p className="text-sm text-center text-muted-foreground">
-                Already have an account?
-                <a href="/login" className="underline">Sign in</a>
-            </p>
         </form>
     );
 }

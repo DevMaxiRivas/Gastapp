@@ -1,17 +1,16 @@
-// App.tsx
 import { Routes, Route } from 'react-router-dom';
-import { LoginPage } from './pages/auth/LoginPage';
-import { RegisterPage } from './pages/auth/RegisterPage';
-import { HomePage } from './pages/home/HomePage';
-import { TransactionsPage } from './pages/transactions/TransactionsPage';
-import { BudgetPage } from './pages/budget/BudgetPage';
-import { ProfilePage } from './pages/profile/ProfilePage';
-import { IndexPage } from './pages/index/IndexPage';
-import { NotFoundPage } from './pages/error/NotFoundPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import HomePage from './pages/home/HomePage';
+import TransactionsPage from './pages/transactions/TransactionsPage';
+import BudgetPage from './pages/budget/BudgetPage';
+import ProfilePage from './pages/profile/ProfilePage';
+import IndexPage from './pages/index/IndexPage';
+import NotFoundPage from './pages/error/NotFoundPage';
 
 import LayoutDashboard from './components/layout/dashboard/LayoutDashboard';
 import LayoutPublic from './components/layout/public/LayoutPublic';
 import { APP_ROUTES } from './lib/constants';
+import LoginPage from './pages/auth/LoginPage';
 
 export function App() {
   return (

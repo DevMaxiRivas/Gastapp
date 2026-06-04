@@ -3,24 +3,35 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 type FormContainerProps = {
     title: string;
+    tip: string;
     children: ReactNode;
 };
 
-export function CenteredFormContainer({ title, children }: FormContainerProps) {
+export function CenteredFormContainer({ title, tip, children }: FormContainerProps) {
     return (
-        <section className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-10">
-                <h1 className="font-bold text-center text-3xl">
-                    <Link to="/">
-                        {APP_NAME}
-                    </Link>
-                </h1>
-                <h2 className="text-center text-2xl/9 font-bold tracking-tight ">{title}</h2>
+        <div className="flex w-full items-center justify-center bg-background p-8 lg:w-2/3">
+            <div className="w-full max-w-md space-y-10 py-24 lg:py-32">
+                <div className="space-y-4 text-center">
+                    <div className="lg:hidden text-primary font-black text-3xl tracking-tight">
+                        <Link to={"/"}>
+                            <b>
+                                {APP_NAME}
+                            </b>
+                        </Link>
+                    </div>
+                    <div className="hidden lg:block text-3xl font-black tracking-tight">
+                        <b>
+                            {title}
+                        </b>
+                    </div>
+                    <div className="mx-auto max-w-xl text-muted-foreground font-medium">
+                        {tip}
+                    </div>
+                </div>
+                <div className="space-y-4">
+                    {children}
+                </div>
             </div>
-
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                {children}
-            </div>
-        </section >
+        </div>
     );
 }
