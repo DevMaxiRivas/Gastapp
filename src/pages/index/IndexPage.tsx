@@ -5,7 +5,7 @@ export default function IndexPage() {
     return (
         <div>
             <h1>Index</h1>
-            <Link to={APP_ROUTES.HOME}>Dashboard</Link>
+            <Link to={APP_ROUTES.DASHBOARD}>Dashboard</Link>
             <Link to={APP_ROUTES.LOGIN}>Login</Link>
             <Link to={APP_ROUTES.REGISTER}>Register</Link>
         </div>

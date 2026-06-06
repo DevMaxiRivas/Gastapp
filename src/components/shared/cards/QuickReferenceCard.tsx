@@ -1,5 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { COLORS_TEXT } from "@/lib/constants-front";
+import { COLORS_TEXT } from "@/lib/constantsFront";
 import { type LucideIcon } from "lucide-react";
 
 type QuickReferenceCardParams = {

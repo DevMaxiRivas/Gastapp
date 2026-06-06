@@ -7,29 +7,43 @@ import ProfilePage from './pages/profile/ProfilePage';
 import IndexPage from './pages/index/IndexPage';
 import NotFoundPage from './pages/error/NotFoundPage';
 
-import LayoutDashboard from './components/layout/dashboard/LayoutDashboard';
-import LayoutPublic from './components/layout/public/LayoutPublic';
 import { APP_ROUTES } from './lib/constants';
 import LoginPage from './pages/auth/LoginPage';
 
+
+import { AuthProvider } from "./context/AuthContext";
+import {
+  ProtectedRoute,
+  PublicOnlyRoute,
+} from "./pages/auth/AuthPages";
+
+
 export function App() {
   return (
-    <Routes>
-      <Route element={<LayoutPublic />}>
+    <AuthProvider>
+      <Routes>
         <Route path="/" element={<IndexPage />} />
-        <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
-      </Route>
+        <Route element={<PublicOnlyRoute />}>
+          <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path={APP_ROUTES.DASHBOARD}>
+            <Route index element={<HomePage />} />
+            <Route path={APP_ROUTES.TRANSACTIONS} element={<TransactionsPage />} />
+            <Route path={APP_ROUTES.BUDGET} element={<BudgetPage />} />
+            <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />
+          </Route>
 
-      <Route path={APP_ROUTES.HOME} element={<LayoutDashboard />}>
-        <Route index element={<HomePage />} />
-        <Route path={APP_ROUTES.TRANSACTIONS} element={<TransactionsPage />} />
-        <Route path={APP_ROUTES.BUDGET} element={<BudgetPage />} />
-        <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />
+          {/* Admin routes (require ADMIN role) */}
+          {/* <Route element={<RoleRoute role="ADMIN" />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route> */}
+        </Route>
 
-      </Route>
-
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        <Route path="/unauthorized" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </AuthProvider>
   );
 }

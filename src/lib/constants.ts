@@ -1,5 +1,5 @@
 export const APP_ROUTES = {
-    HOME: "/dashboard",
+    DASHBOARD: "/dashboard",
     TRANSACTIONS: "transactions",
     BUDGET: "budget",
     PROFILE: "profile",

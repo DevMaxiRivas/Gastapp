@@ -6,7 +6,7 @@ import {
     ItemTitle,
 } from "@/components/ui/item"
 import type { TransactionType } from "@/types/TransactionType"
-import { COLORS_BG, COLORS_TEXT } from "@/lib/constants-front";
+import { COLORS_BG, COLORS_TEXT } from "@/lib/constantsFront";
 
 export function TransactionItem({ transaction }: { transaction: TransactionType }) {
     const colorType = transaction.type === "expense" ? "danger" : "success";

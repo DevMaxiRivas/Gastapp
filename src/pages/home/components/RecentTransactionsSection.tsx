@@ -2,7 +2,7 @@ import { SectionAsCard } from "@/components/shared/sections/SectionAsCard";
 import { SectionAsCardHeader } from "@/components/shared/sections/SectionAsCardHeader";
 import { ItemGroup } from "@/components/ui/item";
 import { TransactionItem } from "@/features/transactions/components/TransactionItem";
-import { CATEGORY_ICONS } from "@/lib/constants-front";
+import { CATEGORY_ICONS } from "@/lib/constantsFront";
 const transactions = [
     {
         category: {

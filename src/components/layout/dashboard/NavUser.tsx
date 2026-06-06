@@ -22,8 +22,11 @@ import {
 } from "@/components/ui/sidebar"
 import type { UserType } from "@/types/UserType"
 import { Link } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
 
 export function NavUser({ user }: { user: UserType }) {
+    const { logout } = useAuth()
+
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -52,11 +55,9 @@ export function NavUser({ user }: { user: UserType }) {
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className={"text-red-600 cursor-pointer"}>
-                            <Link to="/" className="w-full px-2 py-1.5 flex gap-2 items-center cursor-pointer">
-                                <LogOutIcon />
-                                Sign Out
-                            </Link>
+                        <DropdownMenuItem onClick={logout} className={"text-red-600 cursor-pointer"}>
+                            <LogOutIcon />
+                            Sign Out
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

@@ -23,5 +23,17 @@ dist-ssr
 *.sln
 *.sw?
 
-
+# features  
 src/features/test/
+
+# docker
+.dockerignore
+Dockerfile
+compose.yaml
+
+# env
+.env
+.env.dev
+
+# nginx
+nginx.conf

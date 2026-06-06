@@ -4,7 +4,6 @@ import {
     DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -32,8 +31,6 @@ export function FormTransactionDialog() {
                     <Button className={"w-full"}>Save</Button>
                     <DialogClose render={<Button className={"w-full cursor-pointer bg-red-600 hover:bg-red-600/90 text-white hover:text-white"}>Cancel</Button>} />
                 </div>
-                {/* <DialogFooter>
-                </DialogFooter> */}
             </DialogContent>
         </Dialog>
     )
