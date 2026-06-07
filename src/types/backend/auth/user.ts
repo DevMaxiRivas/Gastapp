@@ -1,8 +1,13 @@
+interface Profile {
+    currency: string;
+    currentBudget: number;
+    avatarUrl: string;
+}
+
 export type AuthUserType = {
-    access_token: string;
     id: number;
     name: string;
-    sub: string;
+    email: string;
     role: string;
-    permissions: string[];
+    profile: Profile | null;
 }

@@ -10,10 +10,14 @@ export function parseBackendErrors(errorData: BackendError): Record<string, stri
     errorData.errors?.forEach((err) => {
         const match = err.source?.pointer?.match(/body\.(\w+)/);
         const fieldName = match ? match[1] : "_form";
-        if (fieldErrors[fieldName]) {
-            fieldErrors[fieldName] += `, ${getInfoMessage(err.detail)}`;
+        if (match) {
+            if (fieldErrors[fieldName]) {
+                fieldErrors[fieldName] += `, ${getInfoMessage(err.detail)}`;
+            } else {
+                fieldErrors[fieldName] = `This ${fieldName} ${getInfoMessage(err.detail)}`
+            }
         } else {
-            fieldErrors[fieldName] = `This ${fieldName} ${getInfoMessage(err.detail)}`
+            fieldErrors[fieldName] = `${getInfoMessage(err.detail)}`
         }
     });
     return fieldErrors;

@@ -1,5 +1,5 @@
 export interface BackendError {
-    status: string;
+    success: boolean;
     errors: BackendErrorDetail[];
 }
 

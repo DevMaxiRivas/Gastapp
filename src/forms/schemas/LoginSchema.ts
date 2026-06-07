@@ -1,8 +1,19 @@
 import { z } from 'zod';
 
-const LoginSchema = z.object({
-    email: z.email(),
-    password: z.string().min(8).regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/),
+export const LoginSchema = z.object({
+    email: z.email("This email is invalid"),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
 });
 
-export default LoginSchema;
+export type LoginType = z.infer<typeof LoginSchema>;
+
+export type LoginFormState = LoginType & {
+    errors?: Record<string, string>;
+    success?: boolean;
+    _form?: string;
+};
+
+export const loginInitialState: LoginType = {
+    email: "",
+    password: "",
+};

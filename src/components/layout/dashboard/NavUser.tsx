@@ -20,12 +20,14 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import type { UserType } from "@/types/UserType"
 import { Link } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
+import type { AuthUserType } from "@/types/backend/auth/user"
 
-export function NavUser({ user }: { user: UserType }) {
-    const { logout } = useAuth()
+export function NavUser() {
+    const { user, logout } = useAuth()
+
+    const authUser = user as AuthUserType
 
     return (
         <SidebarMenu>
@@ -34,13 +36,13 @@ export function NavUser({ user }: { user: UserType }) {
                     <DropdownMenuTrigger className={"w-full cursor-pointer"}>
                         <div className="flex gap-2 rounded-full">
                             <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
-                                <AvatarFallback>LR</AvatarFallback>
+                                <AvatarImage src={`${authUser.profile?.avatarUrl}`} alt="shadcn" />
+                                <AvatarFallback>{authUser.email.slice(0, 2).toUpperCase()}</AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">{user.name}</span>
+                                <span className="truncate font-medium">{authUser.name}</span>
                                 <span className="truncate text-xs text-muted-foreground">
-                                    {user.email}
+                                    {authUser.email}
                                 </span>
                             </div>
                         </div>

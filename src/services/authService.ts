@@ -11,38 +11,50 @@ import { jwtDecode } from "jwt-decode";
 import type { AuthApiResponse } from "@/types/backend/response";
 import type { LoginPayloadType, RegisterPayloadType } from "@/types/backend/auth/payload";
 import type { AuthUserType } from "@/types/backend/auth/user";
+import type { BackendError } from "@/types/backend/errors";
 
 
 export const authService = {
-    async login(payload: LoginPayloadType): Promise<AuthUserType> {
+
+    async parseErrors(res: any): Promise<BackendError> {
+        try {
+            const errorData: BackendError = await res.json();
+            return errorData;
+        } catch {
+            throw Error("We were unable to connect to the server")
+        }
+    },
+
+    parseAuthUser(json: AuthApiResponse): AuthUserType {
+        tokenStore.set(json.data.access_token);
+        return jwtDecode(json.data.access_token)
+    },
+
+    async login(payload: LoginPayloadType): Promise<AuthApiResponse | BackendError> {
         const res = await publicFetch("/auth/login", {
             method: "POST",
             body: JSON.stringify(payload),
         });
 
         if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err?.message ?? "Invalid credentials");
+            return await this.parseErrors(res);
         }
 
         const json: AuthApiResponse = await res.json();
-        tokenStore.set(json.data.access_token);
-        return jwtDecode(json.data.access_token);
+        return json;
     },
-    async register(payload: RegisterPayloadType): Promise<AuthUserType> {
+    async register(payload: RegisterPayloadType): Promise<AuthApiResponse | BackendError> {
         const res = await publicFetch("/auth/register", {
             method: "POST",
             body: JSON.stringify(payload),
         });
 
         if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err?.message ?? "Invalid credentials");
+            return await this.parseErrors(res);
         }
 
         const json: AuthApiResponse = await res.json();
-        tokenStore.set(json.data.access_token);
-        return jwtDecode(json.data.access_token);
+        return json;
     },
 
     /**

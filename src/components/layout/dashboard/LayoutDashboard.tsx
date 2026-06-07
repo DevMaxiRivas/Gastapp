@@ -3,6 +3,7 @@ import { SidebarInset, SidebarProvider } from "../../ui/sidebar";
 import { AppSidebar } from "./AppSideBar";
 import { SiteHeader } from "./SiteHeader";
 import { FloatingButton } from "../../../features/transactions/components/FloattingButton";
+import { Toaster } from "sonner";
 
 export default function LayoutDashboard() {
     return (
@@ -21,6 +22,7 @@ export default function LayoutDashboard() {
                 <main className="p-4 space-y-2">
                     <Outlet />
                 </main>
+                <Toaster />
             </SidebarInset>
         </SidebarProvider>
     );

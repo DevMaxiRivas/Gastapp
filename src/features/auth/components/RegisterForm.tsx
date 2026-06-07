@@ -69,7 +69,7 @@ export default function RegisterForm() {
                 <Label htmlFor="email">Email</Label>
                 <Input
                     id="email"
-                    type="text"
+                    type="email"
                     placeholder="your@email.com"
                     disabled={isPending}
                     {...form.register("email")}
