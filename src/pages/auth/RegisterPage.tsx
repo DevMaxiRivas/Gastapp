@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 
-import RegisterForm from "@/features/auth/components/RegisterForm";
-import { APP_ROUTES } from "@/lib/constants";
 import CenteredFormContainer from "@/components/shared/auth/CenteredFormContainer";
 import WelcomeBannerContainer from "@/components/shared/auth/WelcomeBannerContainer";
+import RegisterForm from "@/features/auth/components/RegisterForm";
 
 
 export default function RegisterPage() {
@@ -14,7 +13,7 @@ export default function RegisterPage() {
           <RegisterForm />
           <p className="text-center text-muted-foreground text-xs">
             Already have an account?{" "}
-            <Link to={APP_ROUTES.LOGIN} className="text-primary">
+            <Link to="/login" className="text-primary">
               Login
             </Link>
           </p>

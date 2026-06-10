@@ -9,7 +9,7 @@ import { tokenStore } from "../lib/tokenStore";
 import { jwtDecode } from "jwt-decode";
 
 import type { AuthApiResponse } from "@/types/backend/response";
-import type { LoginPayloadType, RegisterPayloadType } from "@/types/backend/auth/payload";
+import type { LoginPayloadType, UserPayloadType } from "@/types/backend/auth/payload";
 import type { AuthUserType } from "@/types/backend/auth/user";
 import type { BackendErrorResponse } from "@/types/backend/errors";
 
@@ -43,7 +43,7 @@ export const authService = {
         const json: AuthApiResponse = await res.json();
         return json;
     },
-    async register(payload: RegisterPayloadType): Promise<AuthApiResponse | BackendErrorResponse> {
+    async register(payload: UserPayloadType): Promise<AuthApiResponse | BackendErrorResponse> {
         const res = await publicFetch("/auth/register", {
             method: "POST",
             body: JSON.stringify(payload),

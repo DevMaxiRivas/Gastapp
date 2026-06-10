@@ -64,6 +64,7 @@ export default function LoginForm() {
         <form
             id="form-login"
             onSubmit={handleSubmit}
+            className="flex flex-col gap-3"
         >
             <FieldGroup>
                 <Controller
@@ -109,13 +110,13 @@ export default function LoginForm() {
                 />
             </FieldGroup>
             {serverError && (
-                <Alert variant="destructive" className="my-2">
+                <Alert variant="destructive">
                     <AlertTitle><b>Error</b></AlertTitle>
                     <AlertDescription>{serverError}</AlertDescription>
                 </Alert>
             )
             }
-            <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="mt-2 w-full">
+            <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="w-full">
                 {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Login"}
             </Button>
         </form>

@@ -1,119 +1,162 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState, useEffect } from "react";
-import { formInitialState, RegisterSchema, type RegisterFormState } from "@/forms/schemas/RegisterSchema";
-import { submitRegisterAction } from "@/actions/auth/submitRegisterAction";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import type { UserPayloadType } from "@/types/backend/auth/payload";
+import { formUserInitialState, UserSchema } from "@/forms/schemas/UserSchema";
+import { useAuth } from "@/context/AuthContext";
+import type { BackendErrorResponse } from "@/types/backend/errors";
+import type { AuthApiResponse } from "@/types/backend/response";
+import { parseBackendErrors } from "@/lib/backend";
+import type { UserFormStateType } from "@/types/backend/auth/form";
+import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import PasswordInput from "@/components/shared/auth/PasswordInput";
 
 export default function RegisterForm() {
-    const form = useForm<RegisterFormState>({
-        resolver: zodResolver(RegisterSchema),
-        defaultValues: formInitialState,
+    const form = useForm<UserFormStateType>({
+        resolver: zodResolver(UserSchema),
+        defaultValues: formUserInitialState,
         mode: "onBlur"
     });
 
-    const [formState, formAction, isPending] = useActionState<RegisterFormState, FormData>(
-        submitRegisterAction,
-        formInitialState
-    );
+    const { register } = useAuth();
 
+    const [isPending, startTransition] = useTransition();
+    const [serverError, setServerError] = useState<string | null>(null);
 
-    const handleServerValidation = (form: any, formState: RegisterFormState) => {
-        form.setValue('username', formState.username)
-        form.setValue('email', formState.email)
-    }
+    const handleSubmit = form.handleSubmit((values) => {
+        setServerError(null);
+        startTransition(async () => {
+            try {
+                const result: AuthApiResponse | BackendErrorResponse = await register(values as UserPayloadType);
+                if (result.success) {
+                    toast.success("Login successfully");
+                    window.location.href = "/dashboard";
+                } else {
+                    const parsedErrors: Record<string, string> = parseBackendErrors(result as BackendErrorResponse)
+                    Object.keys(parsedErrors).forEach((k) => {
+                        const errkey = k as keyof UserFormStateType;
 
-    useEffect(() => {
-        handleServerValidation(form, formState)
+                        if (errkey !== '_form') {
+                            form.setError(errkey, { message: parsedErrors[errkey] })
+                        }
 
-        if (formState.errors) {
-            Object.keys(formState.errors).forEach((k) => {
-                const errkey = k as keyof RegisterFormState
+                    })
 
-                if (formState.errors && errkey in formState.errors) {
-                    form.setError(errkey, { message: formState.errors ? formState.errors[errkey.toString()] : '' })
+                    if (parsedErrors._form) {
+                        setServerError(parsedErrors._form)
+                    }
                 }
+            } catch (err) {
+                setServerError(
+                    err instanceof Error ? err.message : "Error registering"
+                );
+            }
+        });
+    });
 
-            })
-        }
-
-
-        if (formState.success) {
-            toast.success("User registered successfully");
-            window.location.href = "/";
-        }
-    }, [formState, form]);
     return (
         <form
             className="flex flex-col gap-4"
-            action={formAction}
+            onSubmit={handleSubmit}
         >
-            <div className="flex flex-col gap-1">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                    id="username"
-                    type="text"
-                    placeholder="johndoe"
-                    disabled={isPending}
-                    {...form.register("username")}
+            <FieldGroup>
+                <Controller
+                    name="username"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="form-register-username">
+                                Username
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                type="text"
+                                onChange={field.onChange}
+                                id="form-register-username"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="johnDoe123"
+                                disabled={isPending}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
                 />
-                {form.formState.errors.username && (
-                    <p className="text-xs text-red-500">{form.formState.errors.username.message}</p>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-1">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    disabled={isPending}
-                    {...form.register("email")}
+                <Controller
+                    name="email"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="form-register-email">
+                                Email
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                type="email"
+                                onChange={field.onChange}
+                                id="form-register-email"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="john@example.com"
+                                disabled={isPending}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
                 />
-                {form.formState.errors.email && (
-                    <p className="text-xs text-red-500">{form.formState.errors.email.message}</p>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-1">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    disabled={isPending}
-                    {...form.register("password")}
+                <Controller
+                    name="password"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="form-register-password">
+                                Password
+                            </FieldLabel>
+                            <PasswordInput
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
                 />
-                {form.formState.errors.password && (
-                    <p className="text-xs text-red-500">{form.formState.errors.password.message}</p>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-1">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    disabled={isPending}
-                    {...form.register("confirmPassword")}
+                <Controller
+                    name="confirmPassword"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="form-register-confirmPassword">
+                                Confirm Password
+                            </FieldLabel>
+                            <PasswordInput
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
                 />
-                {form.formState.errors.confirmPassword && (
-                    <p className="text-xs text-red-500">{form.formState.errors.confirmPassword.message}</p>
-                )}
-            </div>
-
-            {/* General error messages */}
-            {formState.errors?._form && (
-                <div className="text-sm text-red-500 text-center">{formState.errors._form}</div>
-            )}
-
+            </FieldGroup>
+            {serverError && (
+                <Alert variant="destructive">
+                    <AlertTitle><b>Error</b></AlertTitle>
+                    <AlertDescription>{serverError}</AlertDescription>
+                </Alert>
+            )
+            }
             <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="w-full">
-                {isPending ? "Registrando..." : "Registrarse"}
+                {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Register"}
             </Button>
         </form>
     );
