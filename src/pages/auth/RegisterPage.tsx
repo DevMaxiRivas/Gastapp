@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import RegisterForm from "@/features/auth/components/RegisterForm";
 import { APP_ROUTES } from "@/lib/constants";
-import { CenteredFormContainer } from "@/components/shared/auth/CenteredFormContainer";
+import CenteredFormContainer from "@/components/shared/auth/CenteredFormContainer";
 import WelcomeBannerContainer from "@/components/shared/auth/WelcomeBannerContainer";
 
 

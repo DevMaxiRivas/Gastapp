@@ -1,146 +1,123 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 // import { PasswordInput } from "@/components/shared/auth/PasswordInput"
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import type { LoginFormState } from "@/forms/schemas/LoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginInitialState, LoginSchema } from "@/forms/schemas/LoginSchema";
-import { useActionState, useEffect } from "react";
+import { useState, useTransition } from "react";
 import { useAuth } from "@/context/AuthContext";
 import type { BackendErrorResponse } from "@/types/backend/errors";
 import type { AuthApiResponse } from "@/types/backend/response";
 import { parseBackendErrors } from "@/lib/backend";
 import { toast } from "sonner";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import PasswordInput from "@/components/shared/auth/PasswordInput";
+import { Loader2 } from "lucide-react";
+import type { LoginPayloadType } from "@/types/backend/auth/payload";
 
 export default function LoginForm() {
     const form = useForm<LoginFormState>({
         resolver: zodResolver(LoginSchema),
         defaultValues: loginInitialState,
-        mode: "onBlur"
+        mode: "onSubmit"
     });
 
     const { login } = useAuth();
 
-    const [formState, formAction, isPending] = useActionState<LoginFormState, FormData>(
-        handleSubmitLogin,
-        loginInitialState
-    );
+    const [isPending, startTransition] = useTransition();
+    const [serverError, setServerError] = useState<string | null>(null);
 
-    async function handleSubmitLogin(_state: LoginFormState, formData: FormData): Promise<LoginFormState> {
-        const payload: LoginFormState = {
-            email: formData.get("email") as string,
-            password: formData.get("password") as string,
-        };
+    const handleSubmit = form.handleSubmit((values) => {
+        setServerError(null);
+        startTransition(async () => {
+            try {
+                const result: AuthApiResponse | BackendErrorResponse = await login(values as LoginPayloadType);
+                if (result.success) {
+                    toast.success("Login successfully");
+                    window.location.href = "/dashboard";
+                } else {
+                    const parsedErrors: Record<string, string> = parseBackendErrors(result as BackendErrorResponse)
+                    Object.keys(parsedErrors).forEach((k) => {
+                        const errkey = k as keyof LoginFormState
 
-        try {
-            const response: BackendErrorResponse | AuthApiResponse = await login(payload);
+                        if (errkey !== '_form') {
+                            form.setError(errkey, { message: parsedErrors[errkey] })
+                        }
 
-            if (!response.success) {
-                const errors: Record<string, string> = parseBackendErrors(response as BackendErrorResponse);
+                    })
 
-                return {
-                    ...payload,
-                    password: "",
-                    errors,
-                    success: false,
-                };
-            }
-
-            // Success login
-            return {
-                ...payload,
-                password: "",
-                errors: {},
-                success: true,
-            };
-        } catch (err: unknown) {
-            console.error("Network error:", err instanceof Error ? err.message : "An error occurred");
-            return {
-                ...payload,
-                password: "",
-                errors: { _form: "We were unable to connect to the server" },
-                success: false,
-            };
-        }
-    }
-
-    const handleServerValidation = (form: any, formState: LoginFormState) => {
-        form.setValue('email', formState.email)
-    }
-
-    useEffect(() => {
-        handleServerValidation(form, formState)
-
-        if (formState.errors) {
-            Object.keys(formState.errors).forEach((k) => {
-                const errkey = k as keyof LoginFormState
-
-                if (formState.errors && errkey in formState.errors && errkey !== '_form') {
-                    form.setError(errkey, { message: formState.errors ? formState.errors[errkey.toString()] : '' })
+                    if (parsedErrors._form) {
+                        setServerError(parsedErrors._form)
+                    }
                 }
-
-            })
-        }
-
-
-        if (formState.success) {
-            toast.success("User Logined successfully");
-            window.location.href = "/";
-        }
-    }, [formState, form]);
+            } catch (err) {
+                setServerError(
+                    err instanceof Error ? err.message : "Error logining in"
+                );
+            }
+        });
+    });
 
     return (
         <form
-            action={formAction}
-            className="flex flex-col gap-3"
+            id="form-login"
+            onSubmit={handleSubmit}
         >
-            <div className="flex flex-col gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    disabled={isPending}
-                    {...form.register("email")}
-                    required
+            <FieldGroup>
+                <Controller
+                    name="email"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="form-login-email">
+                                Email
+                            </FieldLabel>
+                            <Input
+                                {...field}
+                                type="email"
+                                onChange={field.onChange}
+                                id="form-login-email"
+                                aria-invalid={fieldState.invalid}
+                                placeholder="user@example.com"
+                                disabled={isPending}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
                 />
-                {form.formState.errors.email && (
-                    <p className="text-xs text-red-500">{form.formState.errors.email.message}</p>
-                )}
-            </div>
-
-            {/* <div className="flex flex-col gap-3">
-                <Label htmlFor="password">Password</Label>
-                <PasswordInput id="password" name="password" />
-            </div> */}
-            <div className="flex flex-col gap-1">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    disabled={isPending}
-                    {...form.register("password")}
+                <Controller
+                    name="password"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor="form-login-password">
+                                Password
+                            </FieldLabel>
+                            <PasswordInput
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
                 />
-                {form.formState.errors.password && (
-                    <p className="text-xs text-red-500">{form.formState.errors.password.message}</p>
-                )}
-            </div>
-            <div className="text-sm my-3">
-                <a href="/forgot-password" className="font-semibold text-primary hover:text-black">
-                    Forgot password?
-                </a>
-            </div>
-
-            {formState.errors?._form && (
-                <div className="text-sm text-red-500 text-center">{formState.errors._form}</div>
-            )}
-
-            <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="w-full">
-                {isPending ? "Loging in..." : "Login"}
+            </FieldGroup>
+            {serverError && (
+                <Alert variant="destructive" className="my-2">
+                    <AlertTitle><b>Error</b></AlertTitle>
+                    <AlertDescription>{serverError}</AlertDescription>
+                </Alert>
+            )
+            }
+            <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="mt-2 w-full">
+                {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Login"}
             </Button>
-
         </form>
-    )
+    );
 }

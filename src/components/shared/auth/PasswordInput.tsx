@@ -1,19 +1,21 @@
-"use client"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from "lucide-react"
 
-export const PasswordInput = (params: { id: string, name: string }) => {
+type PasswordInputProps = {
+    value?: string
+    onChange: (value: string) => void
+}
+
+export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
     const [showPassword, setShowPassword] = useState(false)
-    const { id, name } = params
     return (
         <div className="relative">
             <Input
-                id={id}
-                name={name}
                 type={showPassword ? "text" : "password"}
+                value={value}
+                onChange={event => onChange(event.target.value)}
                 placeholder="••••••••"
-                required
             />
             <button
                 type="button"
@@ -23,5 +25,7 @@ export const PasswordInput = (params: { id: string, name: string }) => {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
         </div>
-    )
+    );
 }
+
+export default PasswordInput;

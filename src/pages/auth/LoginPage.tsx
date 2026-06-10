@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-import LoginForm from "@/features/auth/components/LoginForm";
 import WelcomeBannerContainer from "@/components/shared/auth/WelcomeBannerContainer";
-import { CenteredFormContainer } from "@/components/shared/auth/CenteredFormContainer";
+import CenteredFormContainer from "@/components/shared/auth/CenteredFormContainer";
+import LoginForm from "@/features/auth/components/LoginForm";
 
 
 export default function LoginPage() {
