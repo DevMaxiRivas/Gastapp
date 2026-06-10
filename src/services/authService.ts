@@ -11,14 +11,14 @@ import { jwtDecode } from "jwt-decode";
 import type { AuthApiResponse } from "@/types/backend/response";
 import type { LoginPayloadType, RegisterPayloadType } from "@/types/backend/auth/payload";
 import type { AuthUserType } from "@/types/backend/auth/user";
-import type { BackendError } from "@/types/backend/errors";
+import type { BackendErrorResponse } from "@/types/backend/errors";
 
 
 export const authService = {
 
-    async parseErrors(res: any): Promise<BackendError> {
+    async parseErrors(res: any): Promise<BackendErrorResponse> {
         try {
-            const errorData: BackendError = await res.json();
+            const errorData: BackendErrorResponse = await res.json();
             return errorData;
         } catch {
             throw Error("We were unable to connect to the server")
@@ -30,7 +30,7 @@ export const authService = {
         return jwtDecode(json.data.access_token)
     },
 
-    async login(payload: LoginPayloadType): Promise<AuthApiResponse | BackendError> {
+    async login(payload: LoginPayloadType): Promise<AuthApiResponse | BackendErrorResponse> {
         const res = await publicFetch("/auth/login", {
             method: "POST",
             body: JSON.stringify(payload),
@@ -43,7 +43,7 @@ export const authService = {
         const json: AuthApiResponse = await res.json();
         return json;
     },
-    async register(payload: RegisterPayloadType): Promise<AuthApiResponse | BackendError> {
+    async register(payload: RegisterPayloadType): Promise<AuthApiResponse | BackendErrorResponse> {
         const res = await publicFetch("/auth/register", {
             method: "POST",
             body: JSON.stringify(payload),
