@@ -20,15 +20,15 @@ import {
 import { authService } from "../services/authService";
 import type { LoginPayloadType, RegisterPayloadType } from "@/types/backend/auth/payload";
 import type { AuthUserType } from "@/types/backend/auth/user";
-import type { BackendError } from "@/types/backend/errors";
+import type { BackendErrorResponse } from "@/types/backend/errors";
 import type { AuthApiResponse } from "@/types/backend/response";
 
 interface AuthContextValue {
     user: AuthUserType | null;
     isReady: boolean;
     isAuthenticated: boolean;
-    login: (payload: LoginPayloadType) => Promise<AuthApiResponse | BackendError>;
-    register: (payload: RegisterPayloadType) => Promise<AuthApiResponse | BackendError>;
+    login: (payload: LoginPayloadType) => Promise<AuthApiResponse | BackendErrorResponse>;
+    register: (payload: RegisterPayloadType) => Promise<AuthApiResponse | BackendErrorResponse>;
     logout: () => Promise<void>;
 }
 
@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const login = useCallback(async (payload: LoginPayloadType) => {
-        const u: AuthApiResponse | BackendError = await authService.login(payload);
+        const u: AuthApiResponse | BackendErrorResponse = await authService.login(payload);
         if (u.success) {
             setUser(authService.parseAuthUser(u as AuthApiResponse));
         }
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const register = useCallback(async (payload: RegisterPayloadType) => {
-        const u: AuthApiResponse | BackendError = await authService.register(payload);
+        const u: AuthApiResponse | BackendErrorResponse = await authService.register(payload);
         if (u.success) {
             setUser(authService.parseAuthUser(u as AuthApiResponse));
         }
