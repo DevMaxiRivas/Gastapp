@@ -35,8 +35,8 @@ import { parseBackendErrors } from "@/lib/backend"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import type { Category } from "@/types/backend/category/response"
 import { useAuthFetch } from "@/hooks/useAuthFetch"
-import LoadingSpinnerForm from "@/components/shared/forms/LoadingSpinnerForm"
 import { capitalizeFirstLetter } from "@/utils/stringUtils"
+import TransactionFormScheleton from "./TransactionFormScheleton"
 
 export function RegisterTransactionForm() {
     const form = useForm<TransactionFormStateType>({
@@ -96,7 +96,7 @@ export function RegisterTransactionForm() {
 
     return (
         loading ?
-            <LoadingSpinnerForm />
+            <TransactionFormScheleton />
             : <form
                 id="form-register-transaction"
                 onSubmit={handleSubmit}
