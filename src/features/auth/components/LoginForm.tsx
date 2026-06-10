@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginInitialState, LoginSchema } from "@/forms/schemas/LoginSchema";
 import { useActionState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import type { BackendError } from "@/types/backend/errors";
+import type { BackendErrorResponse } from "@/types/backend/errors";
 import type { AuthApiResponse } from "@/types/backend/response";
 import { parseBackendErrors } from "@/lib/backend";
 import { toast } from "sonner";
@@ -34,10 +34,10 @@ export default function LoginForm() {
         };
 
         try {
-            const response: BackendError | AuthApiResponse = await login(payload);
+            const response: BackendErrorResponse | AuthApiResponse = await login(payload);
 
             if (!response.success) {
-                const errors: Record<string, string> = parseBackendErrors(response as BackendError);
+                const errors: Record<string, string> = parseBackendErrors(response as BackendErrorResponse);
 
                 return {
                     ...payload,
@@ -76,7 +76,7 @@ export default function LoginForm() {
             Object.keys(formState.errors).forEach((k) => {
                 const errkey = k as keyof LoginFormState
 
-                if (formState.errors && errkey in formState.errors) {
+                if (formState.errors && errkey in formState.errors && errkey !== '_form') {
                     form.setError(errkey, { message: formState.errors ? formState.errors[errkey.toString()] : '' })
                 }
 
