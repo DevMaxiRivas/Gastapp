@@ -1,4 +1,4 @@
-export interface BackendError {
+export interface BackendErrorResponse {
     success: boolean;
     errors: BackendErrorDetail[];
 }
