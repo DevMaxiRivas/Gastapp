@@ -11,14 +11,14 @@ import {
 } from 'lucide-react';
 
 export const CATEGORY_ICONS: Readonly<Record<string, LucideIcon>> = {
-    'UtensilsIcon': Utensils,
-    'CarIcon': Car,
-    'CreditCardIcon': CreditCard,
-    'TvIcon': Tv,
-    'HomeIcon': Home,
-    'HeartIcon': Heart,
-    'ShoppingBagIcon': ShoppingBag,
-    'MoreHorizontalIcon': MoreHorizontal,
+    'UTENSILSICON': Utensils,
+    'CARICO': Car,
+    'CREDITCARDICO': CreditCard,
+    'TVICO': Tv,
+    'HOMEICO': Home,
+    'HEARTICO': Heart,
+    'SHOPPINGBAGICO': ShoppingBag,
+    'MOREHORIZONTALICON': MoreHorizontal,
 };
 
 export const COLORS_TEXT: Readonly<Record<'success' | "neutral" | 'danger' | 'warning', string>> = {
