@@ -8,11 +8,11 @@ const transactions = [
         category: {
             id: "1",
             name: "Groceries",
-            type: "income",
-            icon: CATEGORY_ICONS["UtensilsIcon"],
-        },
+            // type: "income",
+            icon: CATEGORY_ICONS["UTENSILSICON"],
+        } as const,
         id: "1",
-        type: "expense",
+        type: "EXPENSE",
         amount: 10,
         note: "Groceries",
         date: new Date()
@@ -21,11 +21,11 @@ const transactions = [
         category: {
             id: "2",
             name: "Groceries",
-            type: "income",
-            icon: CATEGORY_ICONS["CarIcon"],
-        },
+            // type: "income",
+            icon: CATEGORY_ICONS["CARICON"],
+        } as const,
         id: "2",
-        type: "expense",
+        type: "EXPENSE",
         amount: 20,
         note: "Groceries",
         date: new Date()
@@ -33,18 +33,17 @@ const transactions = [
     {
         category: {
             id: "3",
-            type: "expense",
+            // type: "expense",
             name: "Groceries",
-            icon: CATEGORY_ICONS["ShoppingBagIcon"],
-        },
+            icon: CATEGORY_ICONS["SHOPPINGBAGICON"],
+        } as const,
         id: "3",
         amount: 30,
-        type: "income",
+        type: "EXPENSE",
         note: "Groceries",
         date: new Date()
     } as const
 ]
-
 
 export function RecentTransactionsSection() {
     return (
@@ -57,12 +56,12 @@ export function RecentTransactionsSection() {
             }
             content={
                 <ItemGroup className="w-full">
-                    {
+                    {/* {
                         transactions.map((transaction) => (
                             <TransactionItem key={transaction.id} transaction={transaction} />
 
                         ))
-                    }
+                    } */}
                 </ItemGroup>
             }
         />

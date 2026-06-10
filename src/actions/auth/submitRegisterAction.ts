@@ -1,7 +1,7 @@
 import { RegisterSchema, type RegisterFormState } from "@/forms/schemas/RegisterSchema";
 import { parseBackendErrors } from "@/lib/backend";
 import type { RegisterPayloadType } from "@/types/backend/auth/payload";
-import type { BackendError } from "@/types/backend/errors";
+import type { BackendErrorResponse } from "@/types/backend/errors";
 
 const ENDPOINT = "api/v1/auth/register";
 
@@ -53,7 +53,7 @@ export async function submitRegisterAction(
             body: JSON.stringify(payload),
         });
 
-        const errorData: BackendError = await response.json();
+        const errorData: BackendErrorResponse = await response.json();
 
         if (!response.ok) {
             const errors: Record<string, string> = parseBackendErrors(errorData);

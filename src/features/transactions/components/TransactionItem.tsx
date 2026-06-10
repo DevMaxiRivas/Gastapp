@@ -9,7 +9,7 @@ import type { TransactionType } from "@/types/TransactionType"
 import { COLORS_BG, COLORS_TEXT } from "@/lib/constantsFront";
 
 export function TransactionItem({ transaction }: { transaction: TransactionType }) {
-    const colorType = transaction.type === "expense" ? "danger" : "success";
+    const colorType = transaction.type === "EXPENSE" ? "danger" : "success";
     return (
         <Item>
             <ItemMedia>

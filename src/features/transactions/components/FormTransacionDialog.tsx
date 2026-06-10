@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -9,7 +8,8 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus } from "lucide-react"
-import RegisterTransactionForm from "./RegisterTransactionForm"
+import { RegisterTransactionForm } from "./RegisterTransactionForm"
+
 
 export function FormTransactionDialog() {
     return (
@@ -21,16 +21,12 @@ export function FormTransactionDialog() {
             } />
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Add Expense</DialogTitle>
+                    <DialogTitle>Add Transaction</DialogTitle>
                     <DialogDescription>
-                        Add a new expense to your budget.
+                        Add a new transaction to your budget.
                     </DialogDescription>
                 </DialogHeader>
                 <RegisterTransactionForm />
-                <div>
-                    <Button className={"w-full"}>Save</Button>
-                    <DialogClose render={<Button className={"w-full cursor-pointer bg-red-600 hover:bg-red-600/90 text-white hover:text-white"}>Cancel</Button>} />
-                </div>
             </DialogContent>
         </Dialog>
     )

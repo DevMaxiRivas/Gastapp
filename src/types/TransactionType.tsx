@@ -2,7 +2,7 @@ import type { CategoryType } from "./CategoryType"
 
 export type TransactionType = {
     id: string,
-    type: "expense" | "income",
+    type: "EXPENSE" | "INCOME",
     category: CategoryType,
     amount: number,
     note: string,

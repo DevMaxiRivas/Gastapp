@@ -1,11 +1,11 @@
-import type { BackendError } from "@/types/backend/errors";
+import type { BackendErrorResponse } from "@/types/backend/errors";
 
 function getInfoMessage(message: string) {
     if (!message.includes(":")) return message
-    return message.split(":")[1]
+    return message.split(":")[1].trim().toLowerCase()
 }
 
-export function parseBackendErrors(errorData: BackendError): Record<string, string> {
+export function parseBackendErrors(errorData: BackendErrorResponse): Record<string, string> {
     const fieldErrors: Record<string, string> = {};
     errorData.errors?.forEach((err) => {
         const match = err.source?.pointer?.match(/body\.(\w+)/);
