@@ -37,6 +37,7 @@ import type { Category } from "@/types/backend/category/response"
 import { useAuthFetch } from "@/hooks/useAuthFetch"
 import { capitalizeFirstLetter } from "@/utils/stringUtils"
 import TransactionFormScheleton from "./TransactionFormScheleton"
+import InputSelect from "@/components/shared/forms/InputSelect"
 
 export function RegisterTransactionForm() {
     const form = useForm<TransactionFormStateType>({
@@ -156,7 +157,9 @@ export function RegisterTransactionForm() {
                                     Category
                                 </FieldLabel>
                                 <FieldContent>
-                                    <Select
+                                    <InputSelect
+                                        id="form-register-transaction-categoryId"
+                                        placeholder="Select category"
                                         items={
                                             categoriesByType.map((category: Category) => ({
                                                 value: String(category.id),
@@ -164,28 +167,11 @@ export function RegisterTransactionForm() {
                                             }))
                                         }
                                         name={field.name}
-                                        value={field.value}
-                                        onValueChange={field.onChange}
                                         disabled={isPending}
-                                    >
-                                        <SelectTrigger
-                                            id="form-register-transaction-categoryId"
-                                            aria-invalid={fieldState.invalid}
-                                            className="w-full"
-                                        >
-                                            <SelectValue placeholder="Select a category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="">
-                                                Select category
-                                            </SelectItem>
-                                            {categoriesByType.map((option: Category) => (
-                                                <SelectItem key={option.id} value={String(option.id)}>
-                                                    {capitalizeFirstLetter(option.name)}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                        invalid={fieldState.invalid}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
                                 </FieldContent>
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
