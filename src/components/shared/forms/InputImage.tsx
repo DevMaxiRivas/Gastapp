@@ -23,7 +23,7 @@ export default function InputImage({ value, onChange, maxFiles }: InputImageProp
         <FileUpload
             value={value}
             onValueChange={onChange}
-            accept="image/*"
+            // accept="image/*"
             maxFiles={maxFiles}
             className="w-full max-w-md"
         >

@@ -3,27 +3,27 @@ import { z } from "zod";
 
 export const ProfileSchema = z.object({
     avatar: z.array(z.instanceof(File))
-        .min(1, "At least one file is required")
-        .max(5, "You can upload a maximum of 5 files")
-    // .superRefine((files: File[], ctx: z.RefinementCtx) => {
-    //     files.forEach((file, index) => {
-    //         if (file.size > 1) {
-    //             ctx.addIssue({
-    //                 code: z.ZodIssueCode.custom,
-    //                 message: `File ${file.name} exceeds the 1MB limit`,
-    //                 path: [index],
-    //             });
-    //         }
+        .superRefine((files: File[] | undefined, ctx: z.RefinementCtx) => {
+            if (!files) return;
 
-    //         if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
-    //             ctx.addIssue({
-    //                 code: z.ZodIssueCode.custom,
-    //                 message: `File ${file.name} is an invalid format. Only JPG, PNG, and WEBP are allowed`,
-    //                 path: [index],
-    //             });
-    //         }
-    //     });
-    // })
+            files.forEach((file) => {
+                if (file.size > 10 * 1024 * 1024) {
+                    ctx.addIssue({
+                        code: "custom",
+                        message: `File ${file.name} exceeds the 10MB limit`,
+                        input: files,
+                    });
+                }
+
+                if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
+                    ctx.addIssue({
+                        code: "custom",
+                        message: `File ${file.name} is an invalid format. Only JPG, PNG, and WEBP are allowed`,
+                        input: files,
+                    });
+                }
+            });
+        })
     ,
     currency: z.enum(Object.values(CurrencyTypeObject) as [string, ...string[]]),
     budget: z.number().positive(),
