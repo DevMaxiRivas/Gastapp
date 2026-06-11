@@ -23,7 +23,6 @@ import {
 
 import { TransactionTypeObject } from "@/enums/transaction/TransactionType"
 import { DollarSign, ShoppingBag } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DatePicker } from "@/components/shared/forms/DatePicker"
 import { TabsAsInput } from "@/components/shared/forms/TabsAsInput"
 import type { TransactionFormStateType } from "@/types/backend/transaction/form"

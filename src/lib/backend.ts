@@ -17,7 +17,7 @@ export function parseBackendErrors(errorData: BackendErrorResponse): Record<stri
                 fieldErrors[fieldName] = `This ${fieldName} ${getInfoMessage(err.detail)}`
             }
         } else {
-            fieldErrors[fieldName] = `${getInfoMessage(err.detail)}`
+            fieldErrors[fieldName] = err.detail
         }
     });
     return fieldErrors;

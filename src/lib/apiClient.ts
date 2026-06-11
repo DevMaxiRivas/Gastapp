@@ -34,7 +34,7 @@ function processPendingQueue(error: unknown, token: string | null) {
 
 function buildHeaders(extra?: HeadersInit): HeadersInit {
     return {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         ...(tokenStore.get() ? { Authorization: `Bearer ${tokenStore.get()}` } : {}),
         ...extra,
     };

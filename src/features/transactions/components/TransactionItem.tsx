@@ -5,11 +5,20 @@ import {
     ItemMedia,
     ItemTitle,
 } from "@/components/ui/item"
-import type { TransactionType } from "@/types/TransactionType"
+import { useAuth } from "@/context/AuthContext";
+import { TransactionTypeObject } from "@/enums/transaction/TransactionType";
 import { COLORS_BG, COLORS_TEXT } from "@/lib/constantsFront";
+import type { Profile } from "@/types/backend/auth/user";
+import type { Transaction } from "@/types/backend/transaction/response";
 
-export function TransactionItem({ transaction }: { transaction: TransactionType }) {
-    const colorType = transaction.type === "EXPENSE" ? "danger" : "success";
+export function TransactionItem({ transaction }: { transaction: Transaction }) {
+    const { user } = useAuth();
+    let profile: Profile | null = null;
+    if (user?.profile) {
+        profile = user.profile;
+    }
+
+    const colorType = transaction.type === TransactionTypeObject.EXPENSE ? "danger" : "success";
     return (
         <Item>
             <ItemMedia>
@@ -20,10 +29,10 @@ export function TransactionItem({ transaction }: { transaction: TransactionType 
             <ItemContent className="gap-1">
                 <div className="flex items-center justify-between">
                     <div>
-                        <ItemTitle>{transaction.category.name} - {transaction.date.toLocaleDateString()}</ItemTitle>
+                        <ItemTitle>{transaction.category.name} - {new Date(transaction.transactionDate).toLocaleDateString()}</ItemTitle>
                         <ItemDescription>{transaction.note}</ItemDescription>
                     </div>
-                    <span className={`${COLORS_TEXT[colorType]}`}>ARS {transaction.amount}</span>
+                    <span className={`${COLORS_TEXT[colorType]}`}>{profile ? profile.currency : "USD"} {transaction.amount}</span>
                 </div>
             </ItemContent>
 

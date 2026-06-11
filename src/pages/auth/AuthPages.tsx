@@ -14,6 +14,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import LayoutDashboard from "@/components/layout/dashboard/LayoutDashboard";
 import LayoutPublic from "@/components/layout/public/LayoutPublic";
+import ProfilePage from "./ProfilePage";
 
 // ── Spinner while silent-refresh is resolved ─────────────────
 
@@ -55,7 +56,7 @@ function AuthLoading() {
  * saving the origin URL to redirect after login.
  */
 export function ProtectedRoute() {
-    const { isReady, isAuthenticated } = useAuth();
+    const { isReady, isAuthenticated, user } = useAuth();
     const location = useLocation();
 
     if (!isReady) return <AuthLoading />;
@@ -64,7 +65,8 @@ export function ProtectedRoute() {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    return <LayoutDashboard />;
+    if (user?.profile) return <LayoutDashboard />;
+    return <ProfilePage />;
 }
 
 // ── Public route (only NOT authenticated users) ──────────────

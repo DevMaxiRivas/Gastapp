@@ -9,7 +9,10 @@ export const transactionService = {
     async createTransaction(payload: TransactionPayloadType): Promise<TransactionResponse | BackendErrorResponse> {
         const res = await authFetch(ENDPOINT, {
             method: "POST",
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            headers: {
+                "Content-Type": "application/json",
+            }
         });
 
         if (!res.ok) {
