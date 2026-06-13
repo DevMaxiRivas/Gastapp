@@ -1,11 +1,17 @@
 import { Progress } from "@/components/ui/progress";
+import type { CurrencyType } from "@/enums/profile/CurrencyType";
+import { getDaysInMonth } from "date-fns";
 
-export function BudgetSpendingBar() {
-    const percent = 80;
-    const spent = 200000;
-    const total = 500000;
-    const available = total - spent;
-    const daysLeft = 23;
+interface BudgetSpendingBarProps {
+    amount: number;
+    budget: number;
+    currency: CurrencyType;
+}
+
+export function BudgetSpendingBar({ amount, budget, currency }: BudgetSpendingBarProps) {
+    const percent = amount / budget * 100;
+    const available = budget - amount;
+    const daysLeft = getDaysInMonth(new Date()) - new Date().getDate() + 1;
 
     let colorType = "bg-green-600";
 
@@ -20,12 +26,12 @@ export function BudgetSpendingBar() {
     return (
         <>
             <span className="my-2 text-sm font-semibold">
-                ARS {spent.toLocaleString()} of ARS {total.toLocaleString()}
+                {currency} {amount.toLocaleString()} of {currency} {budget.toLocaleString()}
             </span>
             <Progress value={percent} className={`[&>div>div]:${colorType}`} />
             <div className="flex justify-between pt-2 text-sm">
                 <span>{percent}% used</span>
-                <span className="ml-auto">ARS {available.toLocaleString()} Available ({daysLeft} days left)</span>
+                <span className="ml-auto">{currency} {available.toLocaleString()} Available ({daysLeft} days left)</span>
             </div>
         </>
 

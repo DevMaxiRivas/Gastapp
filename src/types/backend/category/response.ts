@@ -1,11 +1,10 @@
 import type { TypeTransactionType } from "@/enums/transaction/TransactionType";
-import type { LucideIcon } from "lucide-react";
 import type { BackendResponse } from "../response";
 
 export interface Category {
     id: string;
     name: string;
-    icon: string | LucideIcon;
+    icon: string;
     type: TypeTransactionType;
 }
 
