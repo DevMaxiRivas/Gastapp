@@ -11,6 +11,7 @@
 //  touching it ever.
 // ─────────────────────────────────────────────────────────────
 
+import type { QueryParamsType } from "@/types/backend/query_params";
 import { tokenStore } from "./tokenStore";
 
 const BASE_URL = "/api/v1";
@@ -111,4 +112,20 @@ export async function authFetch(
     } finally {
         isRefreshing = false;
     }
+}
+
+export function getQueryString(obj: QueryParamsType) {
+    return Object.entries(obj).reduce(
+        (acc, [key, value]) => {
+            if (value === null || value === undefined)
+                return acc;
+
+            if (value instanceof Date)
+                // Format YYYY-MM-DD without time
+                return `${acc}&${key}=${value.toISOString().slice(0, 10)}`;
+
+            return `${acc}&${key}=${value}`;
+        },
+        ""
+    );
 }

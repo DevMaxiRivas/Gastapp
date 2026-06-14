@@ -26,3 +26,8 @@ export function validateDateIsSameDay(date: Date) {
     const today = new Date();
     return date.toDateString() === today.toDateString();
 }
+
+export function parseStringToDate(date: string) {
+    const [year, month, day] = date.split('-');
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0);
+}

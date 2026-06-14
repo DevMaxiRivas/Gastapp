@@ -1,6 +1,5 @@
 import { QuickStatsSection } from "@/pages/home/components/QuickStatsSection";
 import { MonthlyBudgetSection } from "./components/MonthlyBudgetSection";
-import { MonthlyExpensesSection } from "./components/MonthlyExpensesSection";
 import { RecentTransactionsSection } from "./components/RecentTransactionsSection";
 import { TitlePageSection } from "@/components/shared/sections/TitlePageSection";
 import type { DataSummaryResponse } from "@/types/backend/dashboard/summary/response";
@@ -8,6 +7,7 @@ import { useAuthFetch } from "@/hooks/useAuthFetch";
 import { useMemo } from "react";
 import { transactionService } from "@/services/transactionService";
 import { TransactionTypeObject } from "@/enums/transaction/TransactionType";
+import { MonthlyBalanceSection } from "./components/MonthlyBalanceSection";
 
 export default function HomePage() {
     const { data, loading, error } = useAuthFetch<DataSummaryResponse>("/dashboard/summary")
@@ -36,7 +36,7 @@ export default function HomePage() {
             <MonthlyBudgetSection
                 totalExpense={currentMonthHistoryExpense?.amount ?? 0}
             />
-            <MonthlyExpensesSection />
+            <MonthlyBalanceSection />
             <RecentTransactionsSection transactions={data?.recentTransactions} />
         </>
     );
