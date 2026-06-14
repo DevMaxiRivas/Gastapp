@@ -51,30 +51,4 @@ export const transactionService = {
         const data = await res.json() as TransactionsDailyBalanceResponse;
         return data.data as TransactionsDailyBalance[];
     },
-    async getFullHistoryDailyBalance(queryParams: QueryParamsType): Promise<TransactionsDailyBalance[] | null> {
-        const history: TransactionsDailyBalance[] | null = await this.getHistoryDailyBalance(queryParams);
-        if (!history || history.length === 0) return null;
-
-        const lastDate: Date = parseStringToDate(history[0].date);
-        const firstDate: Date = parseStringToDate(history[history.length - 1].date);
-        const fullHistory: TransactionsDailyBalance[] = [];
-        let currentRecord: TransactionsDailyBalance = history.pop() as TransactionsDailyBalance;
-        for (let date = firstDate; date <= lastDate; date.setDate(date.getDate() + 1)) {
-            const dateString: string = date.toISOString().slice(0, 10);
-
-            if (currentRecord.date === dateString) {
-                fullHistory.push(currentRecord);
-                currentRecord = history.pop() as TransactionsDailyBalance;
-            } else {
-                fullHistory.push({
-                    date: dateString,
-                    totalIncome: 0,
-                    totalExpense: 0
-                });
-            }
-        }
-        // console.log("fullHistory", fullHistory);
-        return fullHistory;
-    }
-
 }

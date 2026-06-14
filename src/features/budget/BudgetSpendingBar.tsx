@@ -9,7 +9,7 @@ interface BudgetSpendingBarProps {
 }
 
 export function BudgetSpendingBar({ amount, budget, currency }: BudgetSpendingBarProps) {
-    const percent = amount / budget * 100;
+    const percent = Math.round(amount / budget * 100);
     const available = budget - amount;
     const daysLeft = getDaysInMonth(new Date()) - new Date().getDate() + 1;
 

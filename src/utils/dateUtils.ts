@@ -31,3 +31,11 @@ export function parseStringToDate(date: string) {
     const [year, month, day] = date.split('-');
     return new Date(parseInt(year), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0);
 }
+
+export function getBeginningOfTheMonth(date: Date) {
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+export function dateToString(date: Date) {
+    return date.toISOString().slice(0, 10);
+}
