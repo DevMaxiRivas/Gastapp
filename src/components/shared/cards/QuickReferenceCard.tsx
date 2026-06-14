@@ -1,12 +1,13 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { COLORS_TEXT } from "@/lib/constantsFront";
-import { type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import type { ColorType } from "@/types/colors/types";
 
-type QuickReferenceCardParams = {
+export type QuickReferenceCardParams = {
     title: string;
     value: string;
     footer?: string;
-    type: "success" | "danger" | "neutral";
+    type: ColorType;
     iconCard?: LucideIcon;
 }
 

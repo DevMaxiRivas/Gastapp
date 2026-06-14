@@ -1,8 +1,15 @@
 import { SectionAsCard } from "@/components/shared/sections/SectionAsCard";
 import { SectionAsCardHeader } from "@/components/shared/sections/SectionAsCardHeader";
+import { type CurrencyType } from "@/enums/profile/CurrencyType";
 import { BudgetSpendingBar } from "@/features/budget/BudgetSpendingBar";
 
-export function ProgressMonthSection() {
+type Props = {
+    amount: number;
+    budget: number;
+    currency: CurrencyType;
+}
+
+export function ProgressMonthSection({ amount, budget, currency }: Props) {
     return (
         <SectionAsCard
             header={
@@ -12,7 +19,11 @@ export function ProgressMonthSection() {
                 />
             }
             content={
-                <BudgetSpendingBar />
+                <BudgetSpendingBar
+                    amount={amount}
+                    budget={budget}
+                    currency={currency}
+                />
             }
         />
     );

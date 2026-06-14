@@ -34,3 +34,37 @@ export const formProfileInitialState = {
     currency: "",
     budget: 0,
 }
+
+export const ProfileUpdateSchema = z.object({
+    avatar: z.array(z.instanceof(File))
+        .superRefine((files: File[] | undefined, ctx: z.RefinementCtx) => {
+            if (!files) return;
+
+            files.forEach((file) => {
+                if (file.size > 10 * 1024 * 1024) {
+                    ctx.addIssue({
+                        code: "custom",
+                        message: `File ${file.name} exceeds the 10MB limit`,
+                        input: files,
+                    });
+                }
+
+                if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
+                    ctx.addIssue({
+                        code: "custom",
+                        message: `File ${file.name} is an invalid format. Only JPG, PNG, and WEBP are allowed`,
+                        input: files,
+                    });
+                }
+            });
+        })
+    ,
+    currency: z.enum(Object.values(CurrencyTypeObject) as [string, ...string[]]).optional(),
+    budget: z.number().positive().optional(),
+})
+
+export const formProfileUpdateInitialState = {
+    avatar: [],
+    currency: "",
+    budget: 0,
+}

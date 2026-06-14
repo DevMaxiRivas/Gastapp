@@ -1,31 +1,39 @@
 import { Section } from "@/components/layout/dashboard/Section";
-import { QuickReferenceCard } from "@/components/shared/cards/QuickReferenceCard";
-import { DollarSign, Target, TrendingDown } from "lucide-react";
+import { QuickReferenceCard, type QuickReferenceCardParams } from "@/components/shared/cards/QuickReferenceCard";
+import type { CurrencyType } from "@/enums/profile/CurrencyType";
+import { DollarSign, Target, TrendingDown, type LucideIcon } from "lucide-react";
 
-export function StatsSection() {
-    const data = [
+function getStats(totalExpenses: number, currentBudget: number, currency: CurrencyType): QuickReferenceCardParams[] {
+    const daysElapsed: number = new Date().getDate();
+    return [
         {
             title: "Available",
-            value: "ARS 1.250,00",
+            value: `${currency} ${(currentBudget - totalExpenses).toLocaleString()}`,
             footer: "Remaining for the month",
             type: "neutral",
             iconCard: DollarSign
         } as const,
         {
             title: "Daily Average",
-            value: "ARS 2.000,00",
-            footer: "Average spending to date",
+            value: `${currency} ${(Math.round(totalExpenses / daysElapsed)).toLocaleString()}`,
+            footer: `Average spending to date (${daysElapsed})`,
             type: "neutral",
             iconCard: TrendingDown
         } as const,
         {
             title: "Daily Limit",
-            value: "ARS 750,00",
-            footer: "For the next 23 days",
+            value: `${currency} ${(Math.round((currentBudget - totalExpenses) / (30 - daysElapsed))).toLocaleString()}`,
+            footer: `For the next ${30 - daysElapsed} days`,
             type: "neutral",
             iconCard: Target
         } as const
     ];
+}
+
+export type StatSectionProps = { totalExpenses: number, currentBudget: number, currency: CurrencyType };
+
+export function StatsSection({ totalExpenses, currentBudget, currency }: StatSectionProps) {
+    const data = getStats(totalExpenses, currentBudget, currency);
 
     return (
         <Section>
