@@ -1,5 +1,6 @@
 import { Progress } from "@/components/ui/progress";
 import type { CurrencyType } from "@/enums/profile/CurrencyType";
+import { roundTo } from "@/utils/numberUtils";
 import { getDaysInMonth } from "date-fns";
 
 interface BudgetSpendingBarProps {
@@ -9,8 +10,8 @@ interface BudgetSpendingBarProps {
 }
 
 export function BudgetSpendingBar({ amount, budget, currency }: BudgetSpendingBarProps) {
-    const percent = Math.round(amount / budget * 100);
-    const available = budget - amount;
+    const percent = roundTo(amount / budget * 100, 2);
+    const available = roundTo(budget - amount, 2);
     const daysLeft = getDaysInMonth(new Date()) - new Date().getDate() + 1;
 
     let colorType = "bg-green-600";

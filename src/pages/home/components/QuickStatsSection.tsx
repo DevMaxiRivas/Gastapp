@@ -1,10 +1,11 @@
-// QuickStatsSection.tsx
 import { Section } from "@/components/layout/dashboard/Section";
 import { QuickReferenceCard } from "@/components/shared/cards/QuickReferenceCard";
 import { useAuth } from "@/context/AuthContext";
 import { getDaysInMonth, getMonthName } from "@/utils/dateUtils";
+import { roundTo } from "@/utils/numberUtils";
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { useMemo } from "react";
+import { Navigate } from "react-router-dom";
 
 interface QuickStatsSectionProps {
     totalExpense: number;
@@ -20,29 +21,35 @@ export function QuickStatsSection({ totalExpense, totalIncome }: QuickStatsSecti
 
     const { user } = useAuth();
 
+
+    if (!user || !user.profile) {
+        return <Navigate to="/dashboard" replace={true} />;
+    }
+
+
     const data = useMemo(() => [
         {
             title: "Total revenue",
-            value: `${user?.profile?.currency} ${totalIncome}`,
+            value: `${user.profile?.currency} ${roundTo(totalIncome, 2)}`,
             footer: `1 - ${daysInMonth} ${monthName} ${year}`,
             type: "success",
             iconCard: TrendingUp
         } as const,
         {
             title: "Total expenses",
-            value: `${user?.profile?.currency} ${totalExpense}`,
+            value: `${user.profile?.currency} ${roundTo(totalExpense, 2)}`,
             footer: `1 - ${daysInMonth} ${monthName} ${year}`,
             type: "danger",
             iconCard: TrendingDown
         } as const,
         {
             title: "Balance",
-            value: `${user?.profile?.currency} ${totalIncome - totalExpense}`,
+            value: `${user.profile?.currency} ${roundTo(totalIncome - totalExpense, 2)}`,
             footer: "Revenue - Expenses",
             type: "neutral",
             iconCard: Wallet
         } as const,
-    ], [daysInMonth, monthName, year, totalExpense, totalIncome]);
+    ], [user, totalExpense, totalIncome]);
 
     return (
         <Section>

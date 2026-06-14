@@ -16,6 +16,7 @@ import { dateToString, getBeginningOfTheMonth, parseStringToDate } from "@/utils
 import type { ChartConfig } from "@/components/ui/chart"
 import type { OptionToggleType } from "@/components/shared/forms/SimpleToggleGroup"
 import SimpleToggleGroup from "@/components/shared/forms/SimpleToggleGroup"
+import { roundTo } from "@/utils/numberUtils"
 
 const getOptionsToggle = (): OptionToggleType[] => {
     const today = new Date();
@@ -48,7 +49,7 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export function MonthlyBalanceGraph() {
+export default function MonthlyBalanceGraph() {
     const [filter, setFilter] = useState<QueryParamsType>({
         fromDate: dateToString(getBeginningOfTheMonth(new Date())),
         toDate: dateToString(new Date()),
@@ -60,8 +61,8 @@ export function MonthlyBalanceGraph() {
         return data.map((item: TransactionsDailyBalance) => {
             return {
                 date: parseStringToDate(item.date),
-                y1: item.totalIncome,
-                y2: item.totalExpense
+                y1: roundTo(item.totalIncome, 2),
+                y2: roundTo(item.totalExpense, 2)
             }
         });
     }

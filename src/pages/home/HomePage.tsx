@@ -10,7 +10,7 @@ import { TransactionTypeObject } from "@/enums/transaction/TransactionType";
 import { MonthlyBalanceSection } from "./components/MonthlyBalanceSection";
 
 export default function HomePage() {
-    const { data, loading, error } = useAuthFetch<DataSummaryResponse>("/dashboard/summary")
+    const { data } = useAuthFetch<DataSummaryResponse>("/dashboard/summary")
 
     const [currentMonthHistoryExpense, currentMonthHistoryIncome] = useMemo(() => {
         if (data) {
