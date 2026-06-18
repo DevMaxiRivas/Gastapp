@@ -25,6 +25,7 @@ export const dashboardKeys = {
   budget: () => ["dashboard", "budget"] as const,
   categories: () => ["dashboard", "categories"] as const,
   summary: () => ["dashboard", "summary"] as const,
+  dailyBalances: () => ["dashboard", "dailyBalances"] as const,
   // Add new sections here without touching existing ones:
   // metrics: () => ["dashboard", "metrics"] as const,
 };

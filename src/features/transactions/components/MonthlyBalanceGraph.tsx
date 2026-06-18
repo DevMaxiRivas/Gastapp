@@ -6,10 +6,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { useEffect, useState, useTransition } from "react"
+import { useMemo } from "react"
 import type { TransactionsDailyBalance } from "@/types/backend/dashboard/transactions/response"
-import type { QueryParamsType } from "@/types/backend/query_params"
-import { transactionService } from "@/services/transactionService"
 import MonthlyExpensesGraphSkeleton from "./skeletons/MonthlyExpensesGraphSkeleton"
 import DailyComparisonChart, { type ChartData } from "@/components/shared/graphs/DailyComparisonChart"
 import { dateToString, getBeginningOfTheMonth, parseStringToDate } from "@/utils/dateUtils"
@@ -17,6 +15,7 @@ import type { ChartConfig } from "@/components/ui/chart"
 import type { OptionToggleType } from "@/components/shared/forms/SimpleToggleGroup"
 import SimpleToggleGroup from "@/components/shared/forms/SimpleToggleGroup"
 import { roundTo } from "@/utils/numberUtils"
+import useGetHistoryDailyBalance from "@/hooks/usegetHistoryDailyBalance"
 
 const getOptionsToggle = (): OptionToggleType[] => {
     const today = new Date();
@@ -50,12 +49,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function MonthlyBalanceGraph() {
-    const [filter, setFilter] = useState<QueryParamsType>({
-        fromDate: dateToString(getBeginningOfTheMonth(new Date())),
-        toDate: dateToString(new Date()),
-    })
-    const [isPending, startTransition] = useTransition();
-    const [chartData, setChartData] = useState<ChartData[]>([]);
+    const { balances, isLoading, filters, setFilters } = useGetHistoryDailyBalance();
 
     const handleMapping = (data: TransactionsDailyBalance[]): ChartData[] => {
         return data.map((item: TransactionsDailyBalance) => {
@@ -67,16 +61,12 @@ export default function MonthlyBalanceGraph() {
         });
     }
 
-    useEffect(() => {
-        startTransition(async () => {
-            const data: TransactionsDailyBalance[] | null = await transactionService.getHistoryDailyBalance(filter);
-            if (data) {
-                setChartData(handleMapping(data));
-            }
-        });
-    }, [filter])
+    const chartData: ChartData[] = useMemo(() => {
+        if (!balances) return [];
+        return handleMapping(balances);
+    }, [balances])
 
-    return isPending ?
+    return isLoading ?
         <MonthlyExpensesGraphSkeleton /> :
         (<Card className="@container/card">
             <CardHeader>
@@ -90,10 +80,10 @@ export default function MonthlyBalanceGraph() {
                 <CardAction>
                     <SimpleToggleGroup
                         options={getOptionsToggle()}
-                        value={filter.fromDate as string}
+                        value={filters.fromDate as string}
                         onChange={(change: string | undefined) => {
                             if (change) {
-                                setFilter((prev) => {
+                                setFilters((prev) => {
                                     return {
                                         ...prev,
                                         fromDate: change,

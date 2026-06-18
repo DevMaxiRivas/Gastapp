@@ -6,7 +6,7 @@ import type { TransactionHistoryByMonth } from "@/types/backend/dashboard/summar
 import type { TypeTransactionType } from "@/enums/transaction/TransactionType";
 import type { QueryParamsType } from "@/types/backend/query_params";
 import type { TransactionsDailyBalance, TransactionsDailyBalanceResponse } from "@/types/backend/dashboard/transactions/response";
-import { parseStringToDate } from "@/utils/dateUtils";
+import { parseBackendErrorToString } from "@/lib/backend";
 
 const ENDPOINT = "/transactions";
 
@@ -36,7 +36,8 @@ export const transactionService = {
 
         return currentHistoryByMonth || null;
     },
-    async getHistoryDailyBalance(queryParams: QueryParamsType): Promise<TransactionsDailyBalance[] | null> {
+
+    async getHistoryDailyBalance(queryParams: QueryParamsType): Promise<TransactionsDailyBalance[]> {
         const URL = `/dashboard/transactions/daily-balance?${getQueryString(queryParams)}`;
         const res = await authFetch(URL, {
             method: "GET",
@@ -46,9 +47,10 @@ export const transactionService = {
         });
 
         if (!res.ok) {
-            return null;
+            const error = await res.json() as BackendErrorResponse;
+            throw new Error(`Error retrieving the response from the URL ${URL}. \n${parseBackendErrorToString(error)}`);
         }
         const data = await res.json() as TransactionsDailyBalanceResponse;
-        return data.data as TransactionsDailyBalance[];
+        return data.data;
     },
 }
