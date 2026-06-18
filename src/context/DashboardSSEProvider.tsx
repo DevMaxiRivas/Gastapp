@@ -20,7 +20,6 @@ import { sseEventMap } from "@/lib/sseEventMap";
 // Component that registers ONE SSE listener
 function SSEListener({ eventName }: { eventName: string }) {
   const queryClient = useQueryClient();
-
   const handler = useCallback(() => {
     const keys = sseEventMap[eventName];
     if (!keys) return;

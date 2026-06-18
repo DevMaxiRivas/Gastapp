@@ -5,19 +5,15 @@ import { StatsSection } from "./components/StatsSection";
 import { ProgressMonthSection } from "./components/MonthSection";
 import { RecommendationsSection } from "./components/RecommendationsSection";
 import { useAuth } from "@/context/AuthContext";
-// import { useAuthFetch } from "@/hooks/useAuthFetch";
-// import type { DataSummaryBudgetResponse } from "@/types/backend/dashboard/summary/budget/response";
 import { Navigate } from "react-router-dom";
-import { DashboardSSEProvider } from "@/context/DashboardSSEProvider";
 import { useBudget } from "@/hooks/useBudget";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import BudgetPageSkeleton from "./components/BudgetPageSkeleton";
 
-export function BudgetPageWithSSE() {
+export default function BudgetPage() {
     const { user } = useAuth();
-    // const { data } = useAuthFetch<DataSummaryBudgetResponse>(`/dashboard/summary/budget`);
     const { budget, isLoading, error } = useBudget();
 
-    if (isLoading) return <p>Cargando</p>;
+    if (isLoading) return <BudgetPageSkeleton />;
     if (error) return <p>{error.message}</p>;
 
     if (!user || !user.profile) {
@@ -43,24 +39,5 @@ export function BudgetPageWithSSE() {
             />
             <RecommendationsSection />
         </>
-    );
-}
-
-export default function BudgetPage() {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                refetchOnWindowFocus: false,
-                refetchOnMount: false,
-                staleTime: Infinity,
-            },
-        },
-    });
-    return (
-        <QueryClientProvider client={queryClient}>
-            <DashboardSSEProvider>
-                <BudgetPageWithSSE />
-            </DashboardSSEProvider>
-        </QueryClientProvider>
     );
 }

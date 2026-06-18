@@ -6,13 +6,27 @@ import "./index.css"
 // import App from "./App.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
 import { App } from './App';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ThemeProvider>
+
+  // <StrictMode>
+  <ThemeProvider>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </ThemeProvider>
-  </StrictMode>
+    </QueryClientProvider>
+  </ThemeProvider>
+  // </StrictMode>
 )

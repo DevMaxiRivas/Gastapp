@@ -1,14 +1,11 @@
 // ─────────────────────────────────────────────────────────────
 //  sseManager.ts
-//  Singleton: Maintains a single SSE connection for the entire application
 //
-//  Responsibilities:
-//  - Connect with Authorization header (no cookie) using
-//    @microsoft/fetch-event-source
-//  - Handle automatic reconnection on errors
-//  - Make silent refresh of the access token if it expires (401)
-//  - Distribute events by name to registered listeners
-//  - Close the connection when there are no active listeners
+//  - Exponencial backoff with jitter between retries
+//  - Retry limit configurable (MAX_RETRIES)
+//  - Automatic reconnection when network connectivity is restored
+//  - Clean disconnection when connectivity is lost
+//  - Retry counter reset on successful connection
 // ─────────────────────────────────────────────────────────────
 
 import {
@@ -20,47 +17,70 @@ import { authService } from "./authService";
 
 const BASE_URL = "/api/v1";
 
-// ── Types ─────────────────────────────────────────────────────
-
 export type SSEEventName = string;
 export type SSEListener = () => void;
-
-// ── Controlled errors ───────────────────────────────────────
 
 class RetriableError extends Error { }
 class FatalError extends Error { }
 
-// ── Manager ───────────────────────────────────────────────────
-
 class SSEManager {
-  // Map<eventName, Set<listener>>
   private listeners = new Map<SSEEventName, Set<SSEListener>>();
   private abortController: AbortController | null = null;
   private isConnecting = false;
 
-  // ── Listener management ────────────────────────────────────
+  // ── Retry configuration ───────────────────────────
+  private retryCount = 0;
+  private readonly MAX_RETRIES = 10;
+  private readonly BASE_DELAY_MS = 1000;   // 1s 
+  private readonly MAX_DELAY_MS = 30_000; // 30s 
+
+  constructor() {
+    // Reconnect when the browser regains connectivity
+    window.addEventListener("online", () => {
+      if (this.totalListeners() > 0 && !this.abortController) {
+        console.info("[SSE] Red restaurada — reconectando…");
+        this.retryCount = 0;
+        this.connect();
+      }
+    });
+
+    // Disconnect cleanly when the network is lost so that
+    // fetchEventSource doesn't wait indefinitely
+    window.addEventListener("offline", () => {
+      console.warn("[SSE] Network lost — closing connection");
+      this.disconnect();
+    });
+  }
+
+  // ── Exponential backoff with jitter ────────────────────────
+  // Jitter (random value) avoids all clients
+  // reconnecting at the same time when the server returns,
+  // distributing the load (thundering herd problem).
+  private getBackoffDelay(): number {
+    const exponential = Math.min(
+      this.BASE_DELAY_MS * Math.pow(2, this.retryCount),
+      this.MAX_DELAY_MS
+    );
+    const jitter = Math.random() * 1000;
+    return Math.round(exponential + jitter);
+  }
+
+  // ── Managing listeners ──────────────────────────────────
 
   subscribe(eventName: SSEEventName, listener: SSEListener): () => void {
     if (!this.listeners.has(eventName)) {
       this.listeners.set(eventName, new Set());
     }
     this.listeners.get(eventName)!.add(listener);
-
-    // Connect if there is no active connection
     this.ensureConnected();
-
-    // Returns cleanup function
     return () => this.unsubscribe(eventName, listener);
   }
 
   private unsubscribe(eventName: SSEEventName, listener: SSEListener): void {
     const set = this.listeners.get(eventName);
     if (!set) return;
-
     set.delete(listener);
     if (set.size === 0) this.listeners.delete(eventName);
-
-    // If no listeners remain, close the connection
     if (this.totalListeners() === 0) this.disconnect();
   }
 
@@ -70,15 +90,11 @@ class SSEManager {
     return count;
   }
 
-  // ── Dispatch events to listeners ────────────────────────
-
   private emit(eventName: SSEEventName): void {
-    const set = this.listeners.get(eventName);
-    if (!set) return;
-    set.forEach((listener) => listener());
+    this.listeners.get(eventName)?.forEach((listener) => listener());
   }
 
-  // ── SSE connection ────────────────────────────────────────────
+  // ── Connection ──────────────────────────────────────────────
 
   private ensureConnected(): void {
     if (this.abortController || this.isConnecting) return;
@@ -90,30 +106,25 @@ class SSEManager {
     this.abortController = new AbortController();
 
     try {
-      await fetchEventSource(`${BASE_URL}/stream-sse/dashboard/summary`, {
+      await fetchEventSource(`${BASE_URL}/stream-sse/events`, {
         method: "GET",
         signal: this.abortController.signal,
-
-        // ── Headers: auth by header, not by cookie ──────────
-        // The token is evaluated at each (re)connection to use
-        // always the freshest value of the tokenStore.
         headers: {
           Authorization: `Bearer ${tokenStore.get() ?? ""}`,
           Accept: "text/event-stream",
         },
 
-        // ── Initial response validation ───────────────
+        // ── Initial response validation ─────────────
         async onopen(response) {
-          if (response.ok) return; // 200 → connection established
+          if (response.ok) {
+            // Connection established → reset retries
+            sseManager.retryCount = 0;
+            return;
+          }
 
           if (response.status === 401) {
-            // Token expired just when connecting; try to refresh
             const refreshed = await SSEManager.doRefresh();
-            if (refreshed) {
-              // fetchEventSource will retry with the new token
-              // because headers() is re-evaluated in each attempt
-              throw new RetriableError("token_refreshed");
-            }
+            if (refreshed) throw new RetriableError("token_refreshed");
             throw new FatalError("unauthorized");
           }
 
@@ -124,37 +135,54 @@ class SSEManager {
           throw new RetriableError(`server_error_${response.status}`);
         },
 
-        // ── Message reception ────────────────────────────
-        onmessage(msg: EventSourceMessage) {
-          // The backend only sends the event name.
-          // Expected SSE format:
-          //   event: transaction-created\n\n
-          // or using the "data" field:
-          //   data: transaction-created\n\n
+        // ── Receiving messages ──────────────────────────
+        onmessage: (msg: EventSourceMessage) => {
           const eventName = msg.event || msg.data;
-          if (eventName) sseManager.emit(eventName.trim());
+          if (eventName) this.emit(eventName.trim());
+        },
+        onclose() {
+          console.warn("[SSE] Connection closed unexpectedly");
+          throw new RetriableError();
         },
 
-        // ── Error handling and reconnection ───────────────────
-        onerror(err) {
-          if (err instanceof FatalError) {
-            // Non-recoverable error → do not retry
-            throw err;
+        // ── Error handling with backoff ──────────────────
+        onerror: (err) => {
+          if (err instanceof RetriableError) {
+            this.retryCount++;
+            if (this.retryCount > this.MAX_RETRIES) {
+              console.error(`[SSE] Máximo de reintentos (${this.MAX_RETRIES}) alcanzado`);
+              throw new FatalError("max_retries_exceeded");
+            }
+
+            const delay = this.getBackoffDelay();
+            console.warn(
+              `[SSE] Retry ${this.retryCount}/${this.MAX_RETRIES} in ${delay}ms`
+            );
+
+            // Return a promise that rejects after the delay
+            // makes fetchEventSource wait before reconnecting
+            return new Promise<void>((_, reject) =>
+              setTimeout(() => reject(err), delay)
+            ) as never;
           }
-          // RetriableError or other → fetchEventSource retries
-          // automatically with exponential backoff
-          console.warn("[SSE] Reconnecting…", err);
+
+          if (err instanceof FatalError) {
+            console.error("[SSE] Fatal error:", err.message);
+            throw err; // stop retries
+          }
+
         },
 
-        // Automatic reconnection with backoff (ms)
-        openWhenHidden: true, // keep active even if the tab is hidden
+        // Keep active even if the tab is in the background
+        openWhenHidden: true,
       });
     } catch (err) {
       if (err instanceof FatalError) {
-        console.error("[SSE] Fatal error, connection closed:", err.message);
+        console.error("[SSE] Conexión cerrada definitivamente:", err.message);
       }
     } finally {
       this.isConnecting = false;
+      this.abortController = null;
     }
   }
 
@@ -164,18 +192,17 @@ class SSEManager {
     this.isConnecting = false;
   }
 
-  // ── Static silent refresh (instance-independent) ───────
+
+  // ── Silent refresh static ───────────────────────────────
 
   private static async doRefresh(): Promise<boolean> {
     try {
-      await authService.silentRefresh()
+      authService.silentRefresh();
       return true;
     } catch {
       return false;
     }
   }
 }
-
-// ── Export unique instance ──────────────────────────────────
 
 export const sseManager = new SSEManager();

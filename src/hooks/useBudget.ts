@@ -13,8 +13,10 @@ export function useBudget() {
   const query = useQuery<DataSummaryBudgetResponse, Error>({
     queryKey: dashboardKeys.budget(),
     queryFn: fetchBudget,
-    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 30,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   return {

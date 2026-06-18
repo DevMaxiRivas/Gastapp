@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { SidebarInset, SidebarProvider } from "../../ui/sidebar";
-import { AppSidebar } from "./AppSideBar";
-import { SiteHeader } from "./SiteHeader";
-import { FloatingButton } from "../../../features/transactions/components/FloattingButton";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/dashboard/AppSideBar";
+import { SiteHeader } from "@/components/layout/dashboard/SiteHeader";
+import { FloatingButton } from "@/features/transactions/components/FloattingButton";
 import { Toaster } from "sonner";
+import { DashboardSSEProvider } from "@/context/DashboardSSEProvider";
 
 export default function LayoutDashboard() {
     return (
@@ -17,11 +18,13 @@ export default function LayoutDashboard() {
         >
             <AppSidebar variant="inset" />
             <SidebarInset>
-                <SiteHeader />
-                <FloatingButton />
-                <main className="p-4 space-y-2">
-                    <Outlet />
-                </main>
+                <DashboardSSEProvider>
+                    <SiteHeader />
+                    <FloatingButton />
+                    <main className="p-4 space-y-4">
+                        <Outlet />
+                    </main>
+                </DashboardSSEProvider>
                 <Toaster />
             </SidebarInset>
         </SidebarProvider>

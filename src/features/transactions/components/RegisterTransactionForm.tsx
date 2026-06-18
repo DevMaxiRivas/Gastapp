@@ -33,10 +33,10 @@ import type { BackendErrorResponse } from "@/types/backend/errors"
 import { parseBackendErrors } from "@/lib/backend"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import type { Category } from "@/types/backend/category/response"
-import { useAuthFetch } from "@/hooks/useAuthFetch"
 import { capitalizeFirstLetter } from "@/utils/stringUtils"
 import TransactionFormScheleton from "./TransactionFormScheleton"
 import InputSelect from "@/components/shared/forms/InputSelect"
+import { useCategories } from "@/hooks/useCategories"
 
 export function RegisterTransactionForm() {
     const form = useForm<TransactionFormStateType>({
@@ -48,7 +48,7 @@ export function RegisterTransactionForm() {
     const [isPending, startTransition] = React.useTransition();
     const [serverError, setServerError] = React.useState<string | null>(null);
 
-    const { data, loading } = useAuthFetch<Category[]>("/categories?size=50");
+    const { categories, isLoading } = useCategories()
 
     const handleSubmit = form.handleSubmit((values) => {
         setServerError(null);
@@ -89,13 +89,13 @@ export function RegisterTransactionForm() {
     const typeTransaction = watch("type");
 
     const categoriesByType = React.useMemo(() => {
-        if (data === null)
+        if (categories === null)
             return [];
-        return data.filter((category: Category) => category.type === typeTransaction);
-    }, [data, typeTransaction]);
+        return categories.filter((category: Category) => category.type === typeTransaction);
+    }, [categories, typeTransaction]);
 
     return (
-        loading ?
+        isLoading ?
             <TransactionFormScheleton />
             : <form
                 id="form-register-transaction"

@@ -23,6 +23,7 @@ import type { BackendErrorResponse } from "@/types/backend/errors";
 export const dashboardKeys = {
   all: ["dashboard"] as const,
   budget: () => ["dashboard", "budget"] as const,
+  categories: () => ["dashboard", "categories"] as const,
   summary: () => ["dashboard", "summary"] as const,
   // Add new sections here without touching existing ones:
   // metrics: () => ["dashboard", "metrics"] as const,

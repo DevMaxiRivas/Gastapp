@@ -13,5 +13,5 @@ export interface CategoryResponseApi extends BackendResponse {
 }
 
 export interface CategoriesResponseApi extends BackendResponse {
-    data: Category[] | null;
+    data: Category[];
 }

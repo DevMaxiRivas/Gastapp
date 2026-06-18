@@ -36,8 +36,11 @@ export function NavUser() {
                     <DropdownMenuTrigger className={"w-full cursor-pointer"}>
                         <div className="flex gap-2 rounded-full">
                             <Avatar>
-                                <AvatarImage src={`${authUser.profile?.avatarUrl}`} alt="shadcn" />
-                                <AvatarFallback>{authUser.email.slice(0, 2).toUpperCase()}</AvatarFallback>
+                                {authUser.profile?.avatarUrl ?
+                                    <AvatarImage src={`${authUser.profile?.avatarUrl}`} alt="user avatar" />
+                                    :
+                                    <AvatarFallback>{authUser.email.slice(0, 2).toUpperCase()}</AvatarFallback>
+                                }
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">{authUser.username}</span>

@@ -12,7 +12,7 @@ export function useSummary() {
   const query = useQuery<DataSummaryResponse, Error>({
     queryKey: dashboardKeys.summary(),
     queryFn: fetchSummary,
-    staleTime: 1000 * 60 * 2,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 
