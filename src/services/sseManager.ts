@@ -150,7 +150,7 @@ class SSEManager {
           if (err instanceof RetriableError) {
             this.retryCount++;
             if (this.retryCount > this.MAX_RETRIES) {
-              console.error(`[SSE] Máximo de reintentos (${this.MAX_RETRIES}) alcanzado`);
+              console.error(`[SSE] Max retries reached (${this.MAX_RETRIES})`);
               throw new FatalError("max_retries_exceeded");
             }
 

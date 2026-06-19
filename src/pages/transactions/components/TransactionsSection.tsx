@@ -1,26 +1,17 @@
-import { Section } from "@/components/layout/dashboard/Section";
-import type { RecentCustomerRow } from "@/components/shared/tables/schema";
-import { RecentCustomersTable } from "@/components/shared/tables/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SectionAsCard } from "@/components/shared/sections/SectionAsCard";
+import { SectionAsCardHeader } from "@/components/shared/sections/SectionAsCardHeader";
+import TransactionsTable from "@/features/transactions/components/TransactionsTable";
 
-import customersData from "../data.json";
-
-export function TransactionsSection() {
-    const customers = customersData as RecentCustomerRow[];
+export default function TransactionsSection() {
     return (
-        <Section>
-            <Card className="@container/card">
-                <CardHeader>
-                    <CardDescription className="text-xl font-semibold">
-                    </CardDescription>
-                    <CardTitle>
-                        <b>Transactions History</b>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <RecentCustomersTable data={customers} />
-                </CardContent>
-            </Card>
-        </Section>
+        <SectionAsCard
+            header={
+                <SectionAsCardHeader
+                    title="History"
+                    description="View and manage your transactions history"
+                />
+            }
+            content={<TransactionsTable />}
+        />
     )
 }

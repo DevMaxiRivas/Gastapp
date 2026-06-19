@@ -1,6 +1,6 @@
 import { TitlePageSection } from "@/components/shared/sections/TitlePageSection";
 import { SummarySection } from "./components/SummarySection";
-import { TransactionsSection } from "./components/TransactionsSection";
+import TransactionsSection from "./components/TransactionsSection";
 
 export default function TransactionsPage() {
     return (

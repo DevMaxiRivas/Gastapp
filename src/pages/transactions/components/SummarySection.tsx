@@ -6,7 +6,7 @@ import { useMemo } from "react";
 export function SummarySection() {
     const data = useMemo(() => [
         {
-            title: "Total revenue",
+            title: "Total income",
             value: "ARS 1.250,00",
             type: "success",
             iconCard: TrendingUp

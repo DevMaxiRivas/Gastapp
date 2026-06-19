@@ -1,10 +1,10 @@
 import type { BackendErrorResponse } from "@/types/backend/errors";
 import type { TransactionPayloadType } from "@/types/backend/transaction/payload";
-import type { TransactionResponse } from "@/types/backend/transaction/response";
-import { authFetch, getQueryString } from "@/lib/apiClient";
+import type { TransactionResponse, TransactionsResponse } from "@/types/backend/transaction/response";
+import { authFetch, getQueryPageableString, getQueryString } from "@/lib/apiClient";
 import type { TransactionHistoryByMonth } from "@/types/backend/dashboard/summary/response";
 import type { TypeTransactionType } from "@/enums/transaction/TransactionType";
-import type { QueryParamsType } from "@/types/backend/query_params";
+import type { QueryPageableParams, QueryParamsType } from "@/types/backend/query_params";
 import type { TransactionsDailyBalance, TransactionsDailyBalanceResponse } from "@/types/backend/dashboard/transactions/response";
 import { parseBackendErrorToString } from "@/lib/backend";
 
@@ -53,4 +53,22 @@ export const transactionService = {
         const data = await res.json() as TransactionsDailyBalanceResponse;
         return data.data;
     },
+
+    async getTransactions(queryParams: QueryParamsType, queryPageableParams: QueryPageableParams): Promise<TransactionsResponse> {
+        const URL = `${ENDPOINT}?${getQueryString(queryParams)}&${getQueryPageableString(queryPageableParams)}`;
+
+        const res = await authFetch(URL, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error(`Error retrieving the response from the URL ${URL}`);
+        }
+
+        const successResponse: TransactionsResponse = await res.json();
+        return successResponse;
+    }
 }

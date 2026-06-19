@@ -11,7 +11,7 @@
 //  touching it ever.
 // ─────────────────────────────────────────────────────────────
 
-import type { QueryParamsType } from "@/types/backend/query_params";
+import type { QueryPageableParams, QueryParamsType, SortParamsType } from "@/types/backend/query_params";
 import { tokenStore } from "./tokenStore";
 
 const BASE_URL = "/api/v1";
@@ -128,4 +128,17 @@ export function getQueryString(obj: QueryParamsType) {
         },
         ""
     );
+}
+
+export function getQueryPageableString(obj: QueryPageableParams) {
+    const { page, size, sort } = obj;
+    let queryString = `page=${page}&size=${size}`;
+
+    if (sort?.length) {
+        sort.forEach((s: SortParamsType) => {
+            queryString += `&sort=${s.sort},${s.direction}`;
+        });
+    }
+
+    return queryString;
 }

@@ -8,7 +8,9 @@ import {
     Tv,
     CreditCard,
     MoreHorizontal,
-    type LucideIcon
+    type LucideIcon,
+    TrendingUp,
+    TrendingDown
 } from 'lucide-react';
 
 export const CATEGORY_ICONS: Readonly<Record<string, LucideIcon>> = {
@@ -20,6 +22,11 @@ export const CATEGORY_ICONS: Readonly<Record<string, LucideIcon>> = {
     'HEARTICO': Heart,
     'SHOPPINGBAGICO': ShoppingBag,
     'MOREHORIZONTALICON': MoreHorizontal,
+};
+
+export const TYPE_TRANSACTION_ICONS: Readonly<Record<string, LucideIcon>> = {
+    'INCOME': TrendingUp,
+    'EXPENSE': TrendingDown
 };
 
 export const COLORS_TEXT: Readonly<Record<ColorType, string>> = {
