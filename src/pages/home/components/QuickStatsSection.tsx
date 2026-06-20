@@ -12,7 +12,6 @@ interface QuickStatsSectionProps {
     totalIncome: number;
 }
 
-
 export function QuickStatsSection({ totalExpense, totalIncome }: QuickStatsSectionProps) {
     const today = new Date();
     const daysInMonth = getDaysInMonth(today);
@@ -30,21 +29,21 @@ export function QuickStatsSection({ totalExpense, totalIncome }: QuickStatsSecti
     const data = useMemo(() => [
         {
             title: "Total revenue",
-            value: `${user.profile?.currency} ${roundTo(totalIncome, 2)}`,
+            value: `${user.profile?.currency} ${roundTo(totalIncome, 2).toLocaleString()}`,
             footer: `1 - ${daysInMonth} ${monthName} ${year}`,
             type: "success",
             iconCard: TrendingUp
         } as const,
         {
             title: "Total expenses",
-            value: `${user.profile?.currency} ${roundTo(totalExpense, 2)}`,
+            value: `${user.profile?.currency} ${roundTo(totalExpense, 2).toLocaleString()}`,
             footer: `1 - ${daysInMonth} ${monthName} ${year}`,
             type: "danger",
             iconCard: TrendingDown
         } as const,
         {
             title: "Balance",
-            value: `${user.profile?.currency} ${roundTo(totalIncome - totalExpense, 2)}`,
+            value: `${user.profile?.currency} ${roundTo(totalIncome - totalExpense, 2).toLocaleString()}`,
             footer: "Revenue - Expenses",
             type: "neutral",
             iconCard: Wallet

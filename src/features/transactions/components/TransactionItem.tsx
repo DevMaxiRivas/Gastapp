@@ -36,7 +36,9 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
                         <ItemTitle>{capitalizeFirstLetter(transaction.category.name)} - {new Date(transaction.transactionDate).toLocaleDateString()}</ItemTitle>
                         <ItemDescription>{transaction.note ? transaction.note.substring(0, 40) : "-"}</ItemDescription>
                     </div>
-                    <span className={`${COLORS_TEXT[colorType]}`}>{user?.profile?.currency} {isExpense ? -transaction.amount : transaction.amount}</span>
+                    <span className={`${COLORS_TEXT[colorType]}`}>
+                        {user?.profile?.currency} {(isExpense ? -transaction.amount : transaction.amount).toLocaleString()}
+                    </span>
                 </div>
             </ItemContent>
 
