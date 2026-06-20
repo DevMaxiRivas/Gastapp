@@ -6,7 +6,7 @@ import { TransactionItem } from "@/features/transactions/components/TransactionI
 import type { Transaction } from "@/types/backend/transaction/response";
 
 interface RecentTransactionsSectionProps {
-    transactions: Transaction[] | undefined;
+    transactions: Transaction[];
 }
 
 export function RecentTransactionsSection({ transactions }: RecentTransactionsSectionProps) {
