@@ -3,7 +3,7 @@ import type { Category } from "../category/response";
 import type { BackendResponse } from "../response";
 
 export interface Transaction {
-    id: string;
+    id: number;
     amount: number;
     type: TypeTransactionType;
     transactionDate: string;
@@ -12,7 +12,7 @@ export interface Transaction {
 }
 
 export interface TransactionResponse extends BackendResponse {
-    data: Transaction | null;
+    data: Transaction;
 }
 
 export interface TransactionsResponse extends BackendResponse {

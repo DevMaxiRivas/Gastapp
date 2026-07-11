@@ -10,28 +10,29 @@ import type { Category } from '@/types/backend/category/response';
 import { format, parseISO } from 'date-fns';
 import type { ColorType } from '@/types/colors/types';
 import { roundTo } from '@/utils/numberUtils';
+import { Button } from '@/components/ui/button';
+import { EditTransacionDialog } from '@/features/transactions/components/EditTransacionDialog';
+
+function getColorTxt(type: TypeTransactionType): string {
+  const color: ColorType = getColorByTransactionType(type);
+  return COLORS_TEXT[color] ?? "text-black";
+}
 
 function CategoryBadge(categrory: Category): ReactNode {
   const Icon: LucideIcon = CATEGORY_ICONS[categrory.icon] ?? HomeIcon;
-  const color: ColorType = getColorByTransactionType(categrory.type);
-  const txtColor: string = COLORS_TEXT[color];
-
   return <Badge variant="outline" className={`px-1.5 text-muted-foreground`}>
-    <Icon className={`me-2 ${txtColor}`} />
+    <Icon className={`me-2 ${getColorTxt(categrory.type)}`} />
     {capitalizeFirstLetter(categrory.name)}
   </Badge>
 }
 
 function TypeBadge(type: TypeTransactionType): ReactNode {
   const Icon: LucideIcon = TYPE_TRANSACTION_ICONS[type] ?? CreditCard;
-  const color: ColorType = getColorByTransactionType(type);
-  const txtColor: string = COLORS_TEXT[color];
   return <Badge variant="outline" className={`px-1.5 text-muted-foreground`}>
-    <Icon className={`me-2 ${txtColor}`} />
+    <Icon className={`me-2 ${getColorTxt(type)}`} />
     {type}
   </Badge>
 }
-
 
 const transactionsColumns: ColumnDef<Transaction>[] = [
   { accessorKey: 'id', header: 'ID' },
@@ -64,6 +65,21 @@ const transactionsColumns: ColumnDef<Transaction>[] = [
     accessorKey: 'transactionDate',
     header: 'Date',
     cell: (info) => format(parseISO(info.getValue<string>()), 'PPP'),
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-2">
+          <EditTransacionDialog transaction={row.original} />
+
+          <Button onClick={() => console.log("Delete")} className={"bg-transparent border-red-600 text-red-600 hover:bg-red-600 hover:text-background"}>
+            Delete
+          </Button>
+        </div>
+      );
+    },
   }
 ];
 

@@ -1,5 +1,5 @@
 import type { BackendErrorResponse } from "@/types/backend/errors";
-import type { TransactionPayloadType } from "@/types/backend/transaction/payload";
+import type { TransactionPayloadType, TransactionUpdatePayloadType } from "@/types/backend/transaction/payload";
 import type { TransactionResponse, TransactionsResponse } from "@/types/backend/transaction/response";
 import { authFetch, getQueryPageableString, getQueryString } from "@/lib/apiClient";
 import type { QueryPageableParams, QueryParamsType } from "@/types/backend/query_params";
@@ -12,6 +12,24 @@ export const transactionService = {
     async createTransaction(payload: TransactionPayloadType): Promise<TransactionResponse | BackendErrorResponse> {
         const res = await authFetch(ENDPOINT, {
             method: "POST",
+            body: JSON.stringify(payload),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if (!res.ok) {
+            const error = await res.json();
+            return error as BackendErrorResponse;
+        }
+        const data = await res.json();
+        return data as TransactionResponse;
+    },
+
+
+    async updateTransaction(id: number, payload: TransactionUpdatePayloadType): Promise<TransactionResponse | BackendErrorResponse> {
+        const res = await authFetch(`${ENDPOINT}/${id}`, {
+            method: "PATCH",
             body: JSON.stringify(payload),
             headers: {
                 "Content-Type": "application/json",

@@ -11,12 +11,14 @@ type TabsAsInputProps = {
     options: OptionTabsAsInput[];
     value: string;
     onChange: (value: string) => void;
+    disabled?: boolean;
 };
 
 export function TabsAsInput({
     options,
     value,
     onChange,
+    disabled = false,
 }: TabsAsInputProps) {
     return (
         <Tabs
@@ -25,7 +27,7 @@ export function TabsAsInput({
         >
             <TabsList className={`grid w-full ${options.length > 2 ? 'grid-cols-' + options.length : 'grid-cols-2'}`}>
                 {options.map((option) => (
-                    <TabsTrigger key={option.value} value={option.value}>
+                    <TabsTrigger key={option.value} value={option.value} disabled={disabled}>
                         <option.icon />
                         {option.label}
                     </TabsTrigger>
