@@ -10,16 +10,16 @@ import {
 import { useState } from "react"
 import type { Transaction } from "@/types/backend/transaction/response"
 import UpdateTransactionForm from "./UpdateTransactionForm"
+import { EditIcon } from "lucide-react"
 
 
-export function EditTransacionDialog({ transaction }: { transaction: Transaction }) {
+export default function EditTransacionDialog({ transaction }: { transaction: Transaction }) {
     const [open, setOpen] = useState<boolean>(false)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger render={
-                <Button
-                    className={"text-black bg-transparent border-black hover:bg-black hover:text-white dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"}>
-                    Edit
+                <Button variant="ghost" size="icon" >
+                    <EditIcon size={24} />
                 </Button>
             } />
             <DialogContent>
