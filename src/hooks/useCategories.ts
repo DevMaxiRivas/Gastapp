@@ -9,6 +9,7 @@ export function useCategories() {
         queryFn: categoryService.getCategories,
         staleTime: Infinity,
         refetchOnWindowFocus: false,
+        refetchOnMount: true
     });
 
     return {

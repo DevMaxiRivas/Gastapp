@@ -17,6 +17,7 @@ export default function useGetHistoryDailyBalance() {
         queryFn: () => transactionService.getHistoryDailyBalance(filters),
         staleTime: Infinity,
         refetchOnWindowFocus: false,
+        refetchOnMount: true,
         placeholderData: (previousData: any) => previousData,
     });
 

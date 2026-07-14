@@ -15,8 +15,7 @@ export function useBudget() {
     queryFn: fetchBudget,
     gcTime: 1000 * 60 * 30,
     staleTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false
+    refetchOnMount: true
   });
 
   return {

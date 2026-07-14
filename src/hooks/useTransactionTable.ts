@@ -10,13 +10,14 @@ import {
 import { transactionService } from '@/services/transactionService';
 import { buildPageable, buildQueryParams } from '@/lib/mapperAPITable';
 import transactionsColumns from '@/tables/transactionsColumns';
+import { dashboardKeys } from '@/services/dashboardService';
 
 export function useTransactionsTable() {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-    const [sorting, setSorting] = useState<SortingState>([]);
+    const [sorting, setSorting] = useState<SortingState>([{ id: 'createdAt', desc: true }]);
     const [globalFilter, setGlobalFilter] = useState<string>('');
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -31,8 +32,9 @@ export function useTransactionsTable() {
     );
 
     const { data, isLoading, isError, error, refetch } = useQuery({
-        queryKey: ['transactions', queryParams, pageableParams],
+        queryKey: [...dashboardKeys.transactions(), 'table', queryParams, pageableParams],
         queryFn: () => transactionService.getTransactions(queryParams, pageableParams),
+        refetchOnMount: true,
         placeholderData: keepPreviousData,
         select: (response) => ({
             rows: response.data,

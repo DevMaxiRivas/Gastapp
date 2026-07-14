@@ -13,6 +13,7 @@ export function useSummary() {
     queryKey: dashboardKeys.summary(),
     queryFn: fetchSummary,
     staleTime: Infinity,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
 
