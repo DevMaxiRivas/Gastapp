@@ -26,9 +26,9 @@ type SSEEventMap = Record<string, QueryKey[]>;
 
 export const sseEventMap: SSEEventMap = {
   // Affects the budget (income and expenses)
-  "transaction-created": [dashboardKeys.budget(), dashboardKeys.summary(), dashboardKeys.dailyBalances()],
-  "transaction-updated": [dashboardKeys.budget(), dashboardKeys.summary(), dashboardKeys.dailyBalances()],
-  "transaction-deleted": [dashboardKeys.budget(), dashboardKeys.summary(), dashboardKeys.dailyBalances()],
+  "transaction-created": [dashboardKeys.transactions()],
+  "transaction-updated": [dashboardKeys.transactions()],
+  "transaction-deleted": [dashboardKeys.transactions()],
 
   // Affects the entire dashboard
   "profile-updated": [dashboardKeys.budget()],

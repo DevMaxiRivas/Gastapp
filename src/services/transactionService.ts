@@ -44,6 +44,21 @@ export const transactionService = {
         return data as TransactionResponse;
     },
 
+    async deleteTransaction(id: number): Promise<null | BackendErrorResponse> {
+        const res = await authFetch(`${ENDPOINT}/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if (!res.ok) {
+            const error = await res.json();
+            return error as BackendErrorResponse;
+        }
+        return null;
+    },
+
     async getHistoryDailyBalance(queryParams: QueryParamsType): Promise<TransactionsDailyBalance[]> {
         const URL = `/dashboard/transactions/daily-balance?${getQueryString(queryParams)}`;
         const res = await authFetch(URL, {

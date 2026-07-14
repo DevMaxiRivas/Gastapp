@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/input-group"
 
 import { TransactionTypeObject } from "@/enums/transaction/TransactionType"
-import { DollarSign, Mail, ShoppingBag } from "lucide-react"
+import { DollarSign, ShoppingBag } from "lucide-react"
 import { DatePicker } from "@/components/shared/forms/DatePicker"
 import { TabsAsInput } from "@/components/shared/forms/TabsAsInput"
 import type { TransactionFormStateType } from "@/types/backend/transaction/form"
@@ -99,10 +99,6 @@ export default function UpdateTransactionForm({ transaction, hiddenDialog }: Upd
             }
         });
     });
-
-    // React.useEffect(() => {
-    //     console.log("dirtyFields", form.formState.dirtyFields);
-    // }, [form.formState.dirtyFields]);
 
     const { watch } = form;
     const typeTransaction = watch("type");

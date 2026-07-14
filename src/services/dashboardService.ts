@@ -22,10 +22,11 @@ import type { BackendErrorResponse } from "@/types/backend/errors";
 
 export const dashboardKeys = {
   all: ["dashboard"] as const,
-  budget: () => ["dashboard", "budget"] as const,
-  categories: () => ["dashboard", "categories"] as const,
-  summary: () => ["dashboard", "summary"] as const,
-  dailyBalances: () => ["dashboard", "dailyBalances"] as const,
+  budget: () => ["dashboard", "transactions", "budget"] as const,
+  categories: () => ["dashboard", "transactions", "categories"] as const,
+  summary: () => ["dashboard", "transactions", "summary"] as const,
+  dailyBalances: () => ["dashboard", "transactions", "dailyBalances"] as const,
+  transactions: () => ["dashboard", "transactions"] as const,
   // Add new sections here without touching existing ones:
   // metrics: () => ["dashboard", "metrics"] as const,
 };
