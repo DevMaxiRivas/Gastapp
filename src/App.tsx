@@ -4,7 +4,7 @@ import HomePage from './pages/home/HomePage';
 import TransactionsPage from './pages/transactions/TransactionsPage';
 import BudgetPage from './pages/budget/BudgetPage';
 import ProfilePage from './pages/profile/ProfilePage';
-import IndexPage from './pages/index/IndexPage';
+// import IndexPage from './pages/index/IndexPage';
 import NotFoundPage from './pages/error/NotFoundPage';
 
 import { APP_ROUTES } from './lib/constants';
@@ -16,13 +16,14 @@ import {
   ProtectedRoute,
   PublicOnlyRoute,
 } from "./pages/auth/AuthPages";
+import { LandingPage } from './pages/landing/LandingPage';
 
 
 export function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<IndexPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route element={<PublicOnlyRoute />}>
           <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />

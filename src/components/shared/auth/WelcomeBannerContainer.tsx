@@ -1,6 +1,5 @@
-import { APP_NAME } from "@/lib/constants";
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import BrandLogoLight from "../BrandLogoLight";
 
 type WelcomeBannerContainerProps = {
     greeting: string;
@@ -20,13 +19,9 @@ export default function WelcomeBannerContainer({ greeting, tip, animationDirecti
         <div className={`hidden bg-primary lg:block lg:w-1/3`}>
             <div className="flex h-full flex-col items-center justify-center p-12 text-center">
                 <div className={`space-y-2 ${animationClass}`}>
-                    <Link to={"/"}>
-                        <div className="text-white text-3xl font-black tracking-tight">
-                            <b>
-                                {APP_NAME}
-                            </b>
-                        </div>
-                    </Link>
+                    <div className="w-full flex justify-center p-2 rounded-lg">
+                        <BrandLogoLight />
+                    </div>
                     <div className="space-y-2">
                         <h1 className="font-light text-5xl text-primary-foreground">{greeting}</h1>
                         <p className="text-primary-foreground/80 text-xl">{tip}</p>
