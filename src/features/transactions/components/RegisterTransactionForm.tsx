@@ -233,7 +233,7 @@ export function RegisterTransactionForm() {
                     </Alert>
                 )}
                 <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="w-full">
-                    {isPending ? "Registrando..." : "Registrarse"}
+                    {isPending ? "Processing..." : "Register"}
                 </Button>
             </form>
     )

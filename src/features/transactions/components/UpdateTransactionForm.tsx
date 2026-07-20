@@ -249,7 +249,7 @@ export default function UpdateTransactionForm({ transaction, hiddenDialog }: Upd
                 </Alert>
             )}
             <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="w-full">
-                {isPending ? "Registrando..." : "Registrarse"}
+                {isPending ? "Updating..." : "Update"}
             </Button>
         </form>
     )
