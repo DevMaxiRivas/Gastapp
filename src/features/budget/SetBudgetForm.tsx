@@ -4,76 +4,36 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { ProfileUpdateSchema } from "@/forms/schemas/ProfileSchema";
-import { parseBackendErrors } from "@/lib/backend";
+import { useEntityForm } from "@/hooks/useEntityForm";
 import { profileService } from "@/services/profileService";
-import type { BackendErrorResponse } from "@/types/backend/errors";
-import type { ProfileUpdateFormStateType } from "@/types/backend/profile/form";
-import type { ProfileResponse } from "@/types/backend/profile/response";
-import { zodResolver } from "@hookform/resolvers/zod";
+import type { ProfileUpdatePayloadType } from "@/types/backend/profile/payload";
 import { Loader2 } from "lucide-react";
-import { useState, useTransition } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Controller } from "react-hook-form";
+import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
 
 
 export function SetBudgetForm() {
     const [isModifying, setIsModifying] = useState<boolean>(false);
-    const [isPending, startTransition] = useTransition();
-    const [serverError, setServerError] = useState<string | null>(null);
-    const { user } = useAuth();
-    const navigate = useNavigate();
-
-    const handleRefresh = () => {
-        navigate(0);
-    };
+    const { user, refresh } = useAuth();
 
     if (!user || !user.profile) {
         return <Navigate to="/dashboard" replace={true} />;
     }
 
-    const form = useForm<ProfileUpdateFormStateType>({
-        resolver: zodResolver(ProfileUpdateSchema),
+    const { form, handleSubmit, isPending, serverError } = useEntityForm({
+        schema: ProfileUpdateSchema,
         defaultValues: {
             budget: user.profile.currentBudget,
             avatar: []
         },
-        mode: "onSubmit"
-    });
-
-    const handleSubmit = form.handleSubmit((values) => {
-        console.log(values);
-        setServerError(null);
-        startTransition(async () => {
-            try {
-                const result: ProfileResponse | BackendErrorResponse = await profileService.updateProfile(values);
-                if (result.success) {
-                    const response: ProfileResponse = result as ProfileResponse;
-                    if (response.data) {
-                        toast.success(`Profile updated successfully`);
-                        handleRefresh();
-                    }
-                } else {
-                    const parsedErrors: Record<string, string> = parseBackendErrors(result as BackendErrorResponse)
-                    Object.keys(parsedErrors).forEach((k) => {
-                        const errkey = k as keyof ProfileUpdateFormStateType
-
-                        if (errkey !== '_form') {
-                            form.setError(errkey, { message: parsedErrors[errkey] })
-                        }
-
-                    })
-
-                    if (parsedErrors._form) {
-                        setServerError(parsedErrors._form)
-                    }
-                }
-            } catch (err) {
-                setServerError(
-                    err instanceof Error ? err.message : "Error saving transaction"
-                );
-            }
-        });
+        onSubmitAction: (values: ProfileUpdatePayloadType) => profileService.updateProfile(values),
+        onSuccess: async () => {
+            toast.success("Budget updated");
+            await refresh();
+            setIsModifying(false);
+        },
     });
 
     return (
