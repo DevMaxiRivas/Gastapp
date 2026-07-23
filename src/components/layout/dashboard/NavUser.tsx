@@ -53,7 +53,7 @@ export function NavUser() {
                     <DropdownMenuContent align="end">
                         <DropdownMenuGroup>
                             <DropdownMenuItem className="p-0">
-                                <Link to="/profile" className="w-full px-2 py-1.5 flex gap-2 items-center cursor-pointer">
+                                <Link to="/dashboard/profile" className="w-full px-2 py-1.5 flex gap-2 items-center cursor-pointer">
                                     <BadgeCheckIcon />
                                     Account
                                 </Link>

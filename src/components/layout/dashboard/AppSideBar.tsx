@@ -4,7 +4,6 @@ import * as React from "react"
 import {
     ChartBarDecreasing,
     LayoutDashboard,
-    FileQuestionMark,
     List,
 } from "lucide-react"
 
@@ -21,7 +20,7 @@ import {
 } from "@/components/ui/sidebar"
 import { NavSecondary } from "./NavSecondary.tsx"
 import { NavUser } from "./NavUser.tsx"
-import { APP_NAME } from "@/lib/constants.ts"
+import BrandLogo from "@/components/shared/BrandLogo.tsx"
 
 const data = {
     user: {
@@ -47,11 +46,11 @@ const data = {
         },
     ],
     navSecondary: [
-        {
-            title: "Get Help",
-            url: "#",
-            icon: FileQuestionMark,
-        },
+        // {
+        //     title: "Get Help",
+        //     url: "#",
+        //     icon: FileQuestionMark,
+        // },
     ],
 }
 
@@ -64,10 +63,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         <SidebarMenuButton
                             className="data-[slot=sidebar-menu-button]:p-1.5!"
                         >
-                            <a href="/">
-                                {/* <FileUp className="size-5!" /> */}
-                                <span className="text-base font-semibold">{APP_NAME}</span>
-                            </a>
+                            <BrandLogo />
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
