@@ -29,6 +29,7 @@ interface AuthContextValue {
     isAuthenticated: boolean;
     login: (payload: LoginPayloadType) => Promise<AuthApiResponse | BackendErrorResponse>;
     register: (payload: UserPayloadType) => Promise<AuthApiResponse | BackendErrorResponse>;
+    refresh: () => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -64,6 +65,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return u;
     }, []);
 
+    const refresh = useCallback(async () => {
+        const u: AuthUserType | null = await authService.silentRefresh();
+        if (u) {
+            setUser(u);
+        }
+    }, []);
+
     const logout = useCallback(async () => {
         await authService.logout();
         setUser(null);
@@ -77,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 isAuthenticated: user !== null,
                 login,
                 register,
+                refresh,
                 logout,
             }}
         >
