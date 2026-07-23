@@ -18,14 +18,12 @@ type InputImageProps = {
 
 
 export default function InputImage({ value, onChange, maxFiles }: InputImageProps) {
-    // console.log(value);
     return (
         <FileUpload
             value={value}
             onValueChange={onChange}
-            // accept="image/*"
             maxFiles={maxFiles}
-            className="w-full max-w-md"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
         >
             <FileUploadDropzone>
                 <div className="flex flex-col items-center gap-1">
@@ -43,7 +41,8 @@ export default function InputImage({ value, onChange, maxFiles }: InputImageProp
                     </div>
                 </FileUploadTrigger>
             </FileUploadDropzone>
-            {value &&
+            {
+                value &&
                 <FileUploadList>
                     {value.map((file) => (
                         <FileUploadItem key={file.name} value={file}>
