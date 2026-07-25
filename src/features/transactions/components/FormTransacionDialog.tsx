@@ -8,7 +8,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus } from "lucide-react"
-import { RegisterTransactionForm } from "./RegisterTransactionForm"
+import TransactionCreateForm from "./TransactionCreateForm"
 
 
 export function FormTransactionDialog() {
@@ -26,7 +26,7 @@ export function FormTransactionDialog() {
                         Add a new transaction to your budget.
                     </DialogDescription>
                 </DialogHeader>
-                <RegisterTransactionForm />
+                <TransactionCreateForm />
             </DialogContent>
         </Dialog>
     )

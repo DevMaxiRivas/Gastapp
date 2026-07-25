@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from "react"
 import type { Transaction } from "@/types/backend/transaction/response"
-import UpdateTransactionForm from "./UpdateTransactionForm"
 import { EditIcon } from "lucide-react"
+import TransactionUpdateForm from "./TransactionUpdateForm"
 
 
 export default function EditTransacionDialog({ transaction }: { transaction: Transaction }) {
@@ -29,7 +29,10 @@ export default function EditTransacionDialog({ transaction }: { transaction: Tra
                         Edit your transaction.
                     </DialogDescription>
                 </DialogHeader>
-                <UpdateTransactionForm transaction={transaction} hiddenDialog={() => setOpen(false)} />
+                <TransactionUpdateForm
+                    transaction={transaction}
+                    onSuccess={() => setOpen(false)}
+                />
             </DialogContent>
         </Dialog>
     )

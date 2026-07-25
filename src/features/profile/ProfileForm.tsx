@@ -1,5 +1,4 @@
 import { Controller } from "react-hook-form";
-import { Loader2 } from "lucide-react";
 import type { BackendErrorResponse } from "@/types/backend/errors";
 import { ProfileUpdateSchema } from "@/forms/schemas/ProfileSchema";
 import type { ProfileResponse } from "@/types/backend/profile/response";
@@ -10,16 +9,12 @@ import { CurrencyTypeObject } from "@/enums/profile/CurrencyType";
 import { Input } from "@/components/ui/input";
 import InputImage from "../../components/shared/forms/InputImage";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { useEntityForm } from "@/hooks/useEntityForm";
 import type z from "zod";
+import type { FormBaseProps } from "@/types/forms/FormStateType";
+import SubmitButton from "@/components/shared/forms/SubmitButton";
 
-type ProfileFormBaseProps = {
-    onSuccess?: () => void;
-    submitLabel?: string;
-};
-
-type ProfileFormProps = ProfileFormBaseProps &
+type ProfileFormProps = FormBaseProps &
     (
         | {
             mode: "create";
@@ -34,14 +29,14 @@ type ProfileFormProps = ProfileFormBaseProps &
     );
 
 export default function ProfileForm(props: ProfileFormProps) {
-    const { mode, defaultValues, onSubmitAction, onSuccess, submitLabel } = props;
-    const label = submitLabel ? submitLabel : mode === "create" ? "Save" : "Save Changes";
+    const { defaultValues, onSubmitAction, onSuccess, submitLabel } = props;
 
     const { form, handleSubmit, isPending, serverError } = useEntityForm({
         schema: ProfileUpdateSchema,
         defaultValues: defaultValues,
         onSubmitAction: onSubmitAction,
         onSuccess: onSuccess,
+        isReinitializable: false,
     });
 
     return (
@@ -112,9 +107,7 @@ export default function ProfileForm(props: ProfileFormProps) {
                     <AlertDescription>{serverError}</AlertDescription>
                 </Alert>
             )}
-            <Button type="submit" disabled={isPending} className="w-full bg-primary hover:bg-primary/90 cursor-pointer">
-                {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : label}
-            </Button>
+            <SubmitButton label={submitLabel} isSubmitting={isPending} />
         </form>
     );
 }
