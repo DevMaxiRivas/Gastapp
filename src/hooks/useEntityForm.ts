@@ -40,6 +40,8 @@ type UseEntityFormParams<TSchema extends { _zod: { output: any; input: any } }, 
      */
     defaultValues: z.infer<TSchema>;
 
+    isReinitializable?: boolean;
+
     /**
      * Function that performs the actual submission (e.g. a service call
      * like `profileService.createProfile` or `transactionService.update`).
@@ -113,6 +115,7 @@ export function useEntityForm<TSchema extends { _zod: { output: any; input: any 
     defaultValues,
     onSubmitAction,
     onSuccess,
+    isReinitializable = false,
 }: UseEntityFormParams<TSchema, TResponse>) {
     // Initialize react-hook-form with Zod-based validation.
     // - `resolver`: delegates validation to the given schema on each
@@ -168,6 +171,9 @@ export function useEntityForm<TSchema extends { _zod: { output: any; input: any 
                     // caller via `onSuccess`, without prescribing what
                     // should happen next (toast, redirect, refetch, etc.).
                     onSuccess?.(result as TResponse);
+                    if (isReinitializable) {
+                        form.reset();
+                    }
                 } else {
                     // Error path: the backend responded, but the
                     // operation itself failed (e.g. validation errors
