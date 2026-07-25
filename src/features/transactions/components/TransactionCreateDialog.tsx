@@ -3,7 +3,7 @@ import { Plus } from "lucide-react"
 import TransactionCreateForm from "./TransactionCreateForm"
 import CustomDialog from "@/components/shared/dialogs/CustomDialog"
 
-export default function TransacionCreateDialog() {
+export default function TransactionCreateDialog() {
     return (
         <CustomDialog
             title="Add Transaction"

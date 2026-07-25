@@ -6,7 +6,7 @@ import TransactionUpdateForm from "./TransactionUpdateForm"
 import CustomDialog from "@/components/shared/dialogs/CustomDialog"
 import { TransactionTypeObject } from "@/enums/transaction/TransactionType"
 
-export default function TransacionUpdateDialog({ transaction }: { transaction: Transaction }) {
+export default function TransactionUpdateDialog({ transaction }: { transaction: Transaction }) {
     const [open, setOpen] = useState<boolean>(false)
     return (
         <CustomDialog

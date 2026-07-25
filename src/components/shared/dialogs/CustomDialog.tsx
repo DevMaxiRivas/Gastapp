@@ -10,7 +10,7 @@ import {
 type DialogProps = {
     title: string;
     description?: string;
-    trigger: React.ReactNode;
+    trigger: React.ReactElement;
     children: React.ReactNode;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
@@ -20,9 +20,7 @@ export default function CustomDialog(props: DialogProps) {
     const { title, description, trigger, children, open, onOpenChange } = props;
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogTrigger>
-                {trigger}
-            </DialogTrigger>
+            <DialogTrigger render={trigger} />
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>

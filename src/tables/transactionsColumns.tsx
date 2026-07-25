@@ -10,8 +10,8 @@ import type { Category } from '@/types/backend/category/response';
 import { format, parseISO } from 'date-fns';
 import type { ColorType } from '@/types/colors/types';
 import { roundTo } from '@/utils/numberUtils';
-import DeleteTransacionDialog from '@/features/transactions/components/DeleteTransacionDialog';
-import TransacionUpdateDialog from '@/features/transactions/components/TransacionUpdateDialog';
+import TransactionDeleteDialog from '@/features/transactions/components/TransactionDeleteDialog';
+import TransactionUpdateDialog from '@/features/transactions/components/TransactionUpdateDialog';
 
 function getColorTxt(type: TypeTransactionType): string {
   const color: ColorType = getColorByTransactionType(type);
@@ -72,8 +72,8 @@ const transactionsColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2">
-          <TransacionUpdateDialog transaction={row.original} />
-          <DeleteTransacionDialog transactionId={row.original.id} />
+          <TransactionUpdateDialog transaction={row.original} />
+          <TransactionDeleteDialog transactionId={row.original.id} />
         </div>
       );
     },
