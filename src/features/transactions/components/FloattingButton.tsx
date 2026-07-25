@@ -1,9 +1,9 @@
-import { FormTransactionDialog } from "./FormTransacionDialog";
+import TransacionCreateDialog from "./TransacionCreateDialog";
 
 export function FloatingButton() {
     return (
         <div className="fixed bottom-4 right-4 z-50">
-            <FormTransactionDialog />
+            <TransacionCreateDialog />
         </div>
     )
 }
