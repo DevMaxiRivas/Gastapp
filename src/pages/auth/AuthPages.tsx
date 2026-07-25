@@ -15,35 +15,21 @@ import { useAuth } from "@/context/AuthContext";
 import LayoutDashboard from "@/components/layout/dashboard/LayoutDashboard";
 import LayoutPublic from "@/components/layout/public/LayoutPublic";
 import ProfilePage from "./ProfilePage";
+import BrandLogo from "@/components/shared/BrandLogo";
+import { Spinner } from "@/components/ui/spinner";
 
 // ── Spinner while silent-refresh is resolved ─────────────────
 
 function AuthLoading() {
     return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                gap: "0.75rem",
-                color: "var(--color-text-secondary)",
-                fontSize: "0.875rem",
-            }}
-        >
-            <span
-                style={{
-                    width: 18,
-                    height: 18,
-                    border: "2px solid currentColor",
-                    borderTopColor: "transparent",
-                    borderRadius: "50%",
-                    display: "inline-block",
-                    animation: "spin 0.7s linear infinite",
-                }}
-            />
-            Verificando sesión…
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <div className="h-screen w-screen flex items-center justify-center text-muted-foreground">
+            <div className="flex flex-col items-center gap-4">
+                <BrandLogo />
+                <div className="flex items-center gap-1">
+                    <Spinner />
+                    <p className="text-muted-foreground">Verifying session</p>
+                </div>
+            </div>
         </div>
     );
 }
