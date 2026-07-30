@@ -1,25 +1,20 @@
 import { profileService } from "@/services/profileService";
-import { useAuth } from "@/context/AuthContext";
-import { Navigate } from "react-router-dom";
-import type { ProfileUpdatePayloadType } from "@/types/backend/profile/payload";
 import { toast } from "sonner";
 import ProfileForm from "@/features/profile/ProfileForm";
 import { formProfileInitialState } from "@/forms/schemas/ProfileSchema";
+import { useAuth } from "@/context/AuthContext";
 
 export default function CreateProfileForm() {
-    const { user, refresh } = useAuth();
-
-    if (!user || !user.profile) {
-        return <Navigate to="/login" replace={true} />;
-    }
+    const { refresh } = useAuth();
+    const onSuccess = async () => {
+        await refresh();
+        toast.success("Profile created successfully");
+    };
 
     return <ProfileForm
         mode="create"
         defaultValues={formProfileInitialState}
-        onSubmitAction={(values: ProfileUpdatePayloadType) => profileService.updateProfile(values)}
-        onSuccess={async () => {
-            toast.success("Profile created successfully");
-            await refresh();
-        }}
+        onSubmitAction={(values) => profileService.createProfile(values)}
+        onSuccess={onSuccess}
         submitLabel="Save" />
 }

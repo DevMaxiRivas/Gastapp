@@ -30,11 +30,11 @@ export const profileService = {
         return data as ProfileResponse;
     },
     async updateProfile(payload: ProfileUpdatePayloadType): Promise<ProfileResponse | BackendErrorResponse> {
-        const avatar: File | undefined = payload.avatar[0];
+        const avatar: File | undefined = payload?.avatar?.[0];
         let profileData: Record<string, string | number> = {};
 
-        if (payload.budget) profileData["currentBudget"] = payload.budget;
-        if (payload.currency) profileData["currency"] = payload.currency;
+        if (payload?.budget) profileData["currentBudget"] = payload.budget;
+        if (payload?.currency) profileData["currency"] = payload.currency;
 
         const formData = new FormData();
 

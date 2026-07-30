@@ -1,6 +1,6 @@
 import { Controller } from "react-hook-form";
 import type { BackendErrorResponse } from "@/types/backend/errors";
-import { ProfileUpdateSchema } from "@/forms/schemas/ProfileSchema";
+import { ProfileSchema } from "@/forms/schemas/ProfileSchema";
 import type { ProfileResponse } from "@/types/backend/profile/response";
 import type { ProfileFormStateType, ProfileUpdateFormStateType } from "@/types/backend/profile/form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import InputImage from "../../components/shared/forms/InputImage";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useEntityForm } from "@/hooks/useEntityForm";
-import type z from "zod";
 import type { FormBaseProps } from "@/types/forms/FormStateType";
 import SubmitButton from "@/components/shared/forms/SubmitButton";
 
@@ -19,12 +18,12 @@ type ProfileFormProps = FormBaseProps &
         | {
             mode: "create";
             defaultValues: ProfileFormStateType;
-            onSubmitAction: (values: z.infer<typeof ProfileUpdateSchema>) => Promise<ProfileResponse | BackendErrorResponse>;
+            onSubmitAction: (values: ProfileFormStateType) => Promise<ProfileResponse | BackendErrorResponse>;
         }
         | {
             mode: "update";
-            defaultValues: ProfileUpdateFormStateType;
-            onSubmitAction: (values: z.infer<typeof ProfileUpdateSchema>) => Promise<ProfileResponse | BackendErrorResponse>;
+            defaultValues: ProfileFormStateType;
+            onSubmitAction: (values: ProfileUpdateFormStateType) => Promise<ProfileResponse | BackendErrorResponse>;
         }
     );
 
@@ -32,7 +31,7 @@ export default function ProfileForm(props: ProfileFormProps) {
     const { defaultValues, onSubmitAction, onSuccess, submitLabel } = props;
 
     const { form, handleSubmit, isPending, serverError } = useEntityForm({
-        schema: ProfileUpdateSchema,
+        schema: ProfileSchema,
         defaultValues: defaultValues,
         onSubmitAction: onSubmitAction,
         onSuccess: onSuccess,
