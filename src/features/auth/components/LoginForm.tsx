@@ -16,6 +16,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import PasswordInput from "@/components/shared/auth/PasswordInput";
 import { Loader2 } from "lucide-react";
 import type { LoginPayloadType } from "@/types/backend/auth/payload";
+import { Link } from "react-router-dom";
+import { APP_ROUTES } from "@/lib/constants";
 
 export default function LoginForm() {
     const form = useForm<LoginFormState>({
@@ -118,6 +120,9 @@ export default function LoginForm() {
             }
             <Button type="submit" disabled={isPending || Object.keys(form.formState.errors).length !== 0} className="w-full">
                 {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Login"}
+            </Button>
+            <Button type="button" variant="outline" className="w-full">
+                <Link to={APP_ROUTES.FORGOT_PASSWORD}>Forgot Password?</Link>
             </Button>
         </form>
     );

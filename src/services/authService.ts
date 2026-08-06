@@ -9,9 +9,11 @@ import { tokenStore } from "../lib/tokenStore";
 import { jwtDecode } from "jwt-decode";
 
 import type { AuthApiResponse } from "@/types/backend/response";
-import type { LoginPayloadType, UserPayloadType } from "@/types/backend/auth/payload";
+import type { ForgotPasswordPayloadType, LoginPayloadType, ResetPasswordPayloadType, UserPayloadType } from "@/types/backend/auth/payload";
 import type { AuthUserType } from "@/types/backend/auth/user";
 import type { BackendErrorResponse } from "@/types/backend/errors";
+import type { ForgotPasswordResponseApi } from "@/types/backend/auth/forgot-password/response";
+import { parseBackendErrorToString } from "@/lib/backend";
 
 
 export const authService = {
@@ -83,5 +85,37 @@ export const authService = {
             // Limpiar token local siempre, aunque el request falle
             tokenStore.clear();
         }
+    },
+
+    async forgotPassword(payload: ForgotPasswordPayloadType): Promise<ForgotPasswordResponseApi | BackendErrorResponse> {
+        const res = await publicFetch("/forgot-password", {
+            method: "POST",
+            body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+            const errorResponse: BackendErrorResponse = await res.json();
+            throw new Error(`Error on forgot password:  ` + parseBackendErrorToString(errorResponse));
+        }
+
+        const json: ForgotPasswordResponseApi = await res.json();
+        return json;
+    },
+    async resetPassword(payload: ResetPasswordPayloadType, token: string): Promise<ForgotPasswordResponseApi | BackendErrorResponse> {
+        const res = await publicFetch(`/reset-password/confirm`, {
+            method: "POST",
+            body: JSON.stringify({
+                newPassword: payload.password,
+                token: token
+            }),
+        });
+
+        if (!res.ok) {
+            const errorResponse: BackendErrorResponse = await res.json();
+            throw new Error(`Error on reset password: ` + parseBackendErrorToString(errorResponse));
+        }
+
+        const json: ForgotPasswordResponseApi = await res.json();
+        return json;
     },
 };

@@ -1,5 +1,5 @@
 export interface BackendErrorResponse {
-    success: boolean;
+    success: false;
     errors: BackendErrorDetail[];
 }
 

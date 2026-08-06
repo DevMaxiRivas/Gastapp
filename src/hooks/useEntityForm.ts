@@ -67,6 +67,7 @@ type UseEntityFormParams<TSchema extends { _zod: { output: any; input: any } }, 
      * post-success behavior instead of a one-size-fits-all side effect.
      */
     onSuccess?: (result: TResponse) => void;
+    onError?: (error: Error) => void;
 };
 
 /**
@@ -115,6 +116,7 @@ export function useEntityForm<TSchema extends { _zod: { output: any; input: any 
     defaultValues,
     onSubmitAction,
     onSuccess,
+    onError,
     isReinitializable = false,
 }: UseEntityFormParams<TSchema, TResponse>) {
     // Initialize react-hook-form with Zod-based validation.
@@ -213,12 +215,16 @@ export function useEntityForm<TSchema extends { _zod: { output: any; input: any 
                         setServerError(parsedErrors._form);
                     }
                 }
-            } catch (err) {
+            } catch (err: any) {
                 // Catches network failures, thrown exceptions inside
                 // `onSubmitAction`, or any other unexpected runtime
                 // error — falls back to the error's message, or a
                 // generic default if it's not an `Error` instance.
-                setServerError(err instanceof Error ? err.message : "Error processing the form");
+                const errorMessage = err instanceof Error ? err.message : "Error processing the form";
+                setServerError(errorMessage);
+                if (onError) {
+                    onError(err);
+                }
             }
         });
     });

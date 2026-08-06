@@ -1,9 +1,7 @@
-import type { UserPayloadType } from "@/types/backend/auth/payload";
+import type { ResetPasswordPayloadType } from "@/types/backend/auth/payload";
 import { z } from "zod";
 
-export const UserSchema = z.object({
-    username: z.string().min(5, "Username too short").max(50, "Username too long"),
-    email: z.email("This email is invalid"),
+export const ResetPasswordSchema = z.object({
     password: z.string()
         .min(8, "Password must be at least 8 characters long")
         .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
@@ -16,9 +14,7 @@ export const UserSchema = z.object({
     path: ['confirmPassword']
 });
 
-export const formUserInitialState: UserPayloadType = {
-    username: "",
-    email: "",
+export const formResetPasswordInitialState: ResetPasswordPayloadType = {
     password: "",
     confirmPassword: "",
 };

@@ -1,5 +1,5 @@
 export interface BackendResponse {
-    success: boolean;
+    success: true;
     statusCode: number;
     meta: null | MetaResponse;
 }

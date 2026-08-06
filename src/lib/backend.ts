@@ -25,7 +25,7 @@ export function parseBackendErrors(errorData: BackendErrorResponse): Record<stri
 
 export function parseBackendErrorToString(errorData: BackendErrorResponse): string {
     if (errorData.errors?.length > 0) {
-        return errorData.errors?.map((err) => `${err.title}: ${err.detail}`).join("\n");
+        return errorData.errors?.map((err) => `${err.title} - ${err.detail}`).join("\n");
     }
     return "Unknown error";
 }

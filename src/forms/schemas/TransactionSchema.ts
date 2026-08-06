@@ -15,6 +15,6 @@ export const TransactionInitialState: TransactionPayloadType = {
     note: "",
     amount: 0,
     categoryId: "",
-    type: TransactionTypeObject.INCOME,
+    type: TransactionTypeObject.EXPENSE,
     transactionDate: new Date(),
 };

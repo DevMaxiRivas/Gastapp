@@ -17,6 +17,8 @@ import {
   PublicOnlyRoute,
 } from "./pages/auth/AuthPages";
 import { LandingPage } from './pages/landing/LandingPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 
 
 export function App() {
@@ -27,6 +29,8 @@ export function App() {
         <Route element={<PublicOnlyRoute />}>
           <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
+          <Route path={APP_ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+          <Route path={APP_ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path={APP_ROUTES.DASHBOARD}>

@@ -5,6 +5,8 @@ export const APP_ROUTES = {
     PROFILE: "profile",
     LOGIN: "/login",
     REGISTER: "/register",
+    FORGOT_PASSWORD: "/forgot-password",
+    RESET_PASSWORD: "/reset-password",
 };
 
 export const APP_NAME = "GastAPP";
